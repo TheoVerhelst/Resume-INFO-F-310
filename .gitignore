@@ -1,0 +1,5 @@
+*.geany
+*.dvi
+*.aux
+*.toc
+*.log
