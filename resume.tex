@@ -5,6 +5,7 @@
 \usepackage[francais]{babel}
 \usepackage[top=1.5cm, left=2.5cm, bottom=1.5cm, right=2.5cm]{geometry}
 \usepackage{amsmath}
+\usepackage{amsfonts}
 \usepackage{textcomp}
 \usepackage{graphicx}
 
@@ -23,30 +24,30 @@ opérationelle, dans ce cours seront abordés la \emph{programmation mathématiq
 et les \emph{méthodes combinatoires dans les graphes}.
 
 \section{Programmation mathématique}
-\subsection{Définitions}
+\subsection{Définition de la programmation mathématique}
 \paragraph{}
 La programmation mathématique est une modélisation de problèmes (qui peuvent
-provenir d'une large gamme de domaines) ainsi que leur résolution. On représente
-un problème comme suit:
-\paragraph{}
-\emph{Définition: }
+provenir d'une large gamme de domaines) ainsi que leur résolution.
+\paragraph{Définition:} Un problème de programmation mathématique est défini
+par un tuple \((z, G)\), où
+\[z:\mathbb{R}^n\to\mathbb{R}:(x_1,\dots,x_n)\mapsto f(x_1,\dots,x_n)\]
+est appelée \emph{fonction économique} (ou encore \emph{fonction de coût}), et
+où \[G=\{(g_j(x_1,\dots,x_n)\star b_j)\;\forall j\in[1,m]\},\;\star\in\{=,\ge,\le\}\]
+sont appelées \emph{contraintes}.
+\paragraph{Notation:}On notera
+\[g_j(x_1,\dots,x_n\begin{Bmatrix}\le\\\ge\\=\end{Bmatrix}b_j\quad\forall j\in[1,m]\]
+\paragraph{Définition:}
 Résoudre un problème de programmation mathématique consiste à trouver les
-valeurs \(x_i\;\,\forall i\in[n]\) qui maximisent une fonction
-\[f(x_1,\dots,x_n)\]
-tout en vérifiant
-\[g_j(x_1,\dots,x_n)\begin{Bmatrix}\le\\\ge\\=\end{Bmatrix}b_j\quad\forall j\in[m]\]
-La fonction \(f\) (on notera parfois \(f(x_1,\dots,x_n) = z\)) est appellée
-fonction de coût, et les fonctions \(g_j\) sont les contraintes.\\
-\emph{Note:} Le problème peut également consister en la minimisation d'une
-fonction, mais il suffit alors de poser \(f\) comme étant l'opposé de cette
-fonction. Cet énoncé ne perds donc pas en généralité.
+valeurs \(x_i\;\,\forall i\in[1,n]\) qui maximisent, minimisent ou rapprochent
+le plus possible d'une valeur donnée la fonction économique \(z\),
+tout en vérifiant toutes les contraintes \(g_j\).
 
 \paragraph{}
 \emph{Définition: }
 Quand les fonctions \(f\) et \(g_j\) sont linéaires en \(x_i\), alors le
 problème est appelé problème de programmation linéaire.
 
-\subsection{Exemples}
+\subsection{Exemples de problèmes de programmation mathématique}
 \paragraph{Le problème du sac à dos} Supposons que, dans l'optique d'une
 randonnée en montagne, l'on cherche à remplir au mieux un sac à dos avec des
 aliments ayant chacun un poids et une valeur énergétique, en sachant que l'on ne
@@ -105,4 +106,16 @@ tel que posé pour visiter tous les états des États-Unis), on a à une vache p
 \(10^{69}\) solutions. Leur énumération est simplement impossible, même avec le
 plus puissant des ordinateur connus.
 
+\subsection{Respect d'un nombre paramétrique de contraintes}
+On peut étendre la définition de la programmation mathématique en permettant
+de ne respecter qu'un nombre \(m'\) de contraintes, avec \(m'<m\).
+Pour cela, introduisons \(m\) variables booléennes \(\delta_i\) qui indiqueront
+si la contrainte \(i\) est respectée. Introduisons également un très grand nombre \(M\),
+qui est beaucoup plus grand que toutes les valeurs que peuvent prendre les variables
+et les paramètres. On peut alors réécrire les contraintes comme suit:
+\[g_i(x_1,\dots,x_n)-b_i\begin{Bmatrix}\le\\\ge\\=\end{Bmatrix}M(1-\delta_i)\]
+et rajouter la contrainte suivante:
+\[\sum_{i=1}^{m}\delta_i\ge m'\]
+Le problème résultant reste un problème de programmation linéaire si \(f\) et
+\(g\) sont des fonctions linéaires.
 \end{document}
