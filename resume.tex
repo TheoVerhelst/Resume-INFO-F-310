@@ -29,30 +29,59 @@ et les \emph{méthodes combinatoires dans les graphes}.
 \paragraph{}
 La programmation mathématique est une modélisation de problèmes (qui peuvent
 provenir d'une large gamme de domaines) ainsi que leur résolution.
+
 \paragraph{Définition:} Un problème de programmation mathématique est défini
 par un tuple \((z, G)\), où
-\[z:\mathbb{R}^n\to\mathbb{R}:(x_1,\dots,x_n)\mapsto f(x_1,\dots,x_n)\]
+\[z:E^n\to E:(x_1,\dots,x_n)\mapsto f(x_1,\dots,x_n)\]
 est appelée \emph{fonction économique} (ou encore \emph{fonction de coût}), et
 où \[\star\in\{=,\ge,\le\},\;G=\{(g_j(x_1,\dots,x_n)\star b_j)\;\forall j\in[1,m]\}\]
 sont appelées \emph{contraintes}.
+
 \paragraph{Notation:}On notera
 \[g_j(x_1,\dots,x_n)\begin{Bmatrix}\le\\\ge\\=\end{Bmatrix}b_j\quad\forall j\in[1,m]\]
+
+\paragraph{Définition:}On classe les problèmes selon la nature de l'ensemble \(E\):
+\begin{itemize}
+	\item \(E=\mathbb{R}\) correspond aux problèmes continus
+	\item \(E=\mathbb{R}\) correspond aux problèmes entiers
+	\item \(E=\{1,0\}\) correspond aux problèmes booléens
+\end{itemize}
+Ces classes peuvent être mixées, si \(E\) est l'union de plusieurs de ces sous-ensembles.
+
 \paragraph{Définition:}
 Résoudre un problème de programmation mathématique consiste à trouver les
-valeurs \(x_i\;\,\forall i\in[1,n]\) qui maximisent ou minimisent le plus
+valeurs \((x_1,\dots,x_n)\) qui maximisent ou minimisent le plus
 possible d'une valeur donnée la fonction économique \(z\),
 tout en vérifiant toutes les contraintes \(g_j\).
+
 \paragraph{Définition:}
 Pour une solution donnée \((x_1,\dots,x_n)\), on dit qu'une contrainte
 d'indice \(j\) est saturée quand:
 \[g_j(x_1,\dots,x_n)=b_j\]
-
-\paragraph{Note:}
 Cette notion n'est intéressante que pour les contraintes à inégalités, et représente le cas où une ressource est utilisée à son maximum.
 
 \paragraph{Définition:}
 Quand les fonctions \(f\) et \(g_j\) sont linéaires en \(x_i\), alors le
 problème est appelé problème de programmation linéaire.
+
+\section{Problèmes  de programmation linéaire continus}
+On commencera par exprimer les problèmes de programmation linéaire continus sous forme matricielle:
+\[\begin{cases}
+\text{Max } z=cx \quad & z\in\mathbb{R},\,c\in\mathbb{R}^{1\times n},\,
+x\in\mathbb{R}^{n\times 1}_+ \\
+Ax \le b               & A\in\mathbb{R}^{m\times n},\,
+b\in\mathbb{R}^{m\times 1}
+\end{cases}\]
+où \(x\) est le vecteur de variables, \(c\) est le vecteur de coefficients de
+la fonction économique \(z\), \(A\) est la matrices de coefficients des contraintes, et \(b\) est le vecteur de termes indépendants des contraintes.
+
+\paragraph{Note:}On se passe des contraintes en \(\ge\) et \(=\), car on peut toujours reformuler ces contraintes avec d'autres contraintes en \(\le\):
+\[a=b\Leftrightarrow a\le b\land -a\le-b\]
+\[a\ge b\Leftrightarrow -a\le-b\]
+
+\paragraph{Note:}On ne considère que les  problèmes où les variables \((x_1,\dots,x_n)\) sont non-strictement positives, car ces variables représentent souvent des quantités, et ne peuvent donc pas être négatives. Si toutefois une variable \(x_i,\,i\in[1,n]\) peut être négative, on se ramène dans le cas non-strictement positif en posant
+\[x_i=y_i-z_i\]
+où \(y_i,z_i\) sont deux nouvelles variables dans \(\mathbb{R}^+\).
 
 \section{Exemples de problèmes de programmation mathématique}
 \paragraph{Le problème du sac à dos} Supposons que, dans l'optique d'une
@@ -106,6 +135,7 @@ Les contraintes sont les suivantes:
 contrainte prends beaucoup, beaucoup de temps. C'est ce qui explique la nature
 difficile de ce problème, et qui le rends impossible à résoudre en temps
 polynomial.
+
 \paragraph{}On pourrait être tenté de résoudre le problème en énumérant toutes
 les solutions possibles, et en prenant la meilleure. On peut trouver facilement
 que le nombre de solutions possibles est \(n!\). Pour \(n=52\) (le problème
@@ -125,6 +155,7 @@ et rajouter la contrainte suivante:
 \[\sum_{i=1}^{m}\delta_i\ge m'\]
 Le problème résultant reste un problème de programmation linéaire si \(f\) et
 \(g\) sont des fonctions linéaires.
+
 \section{Classification des problèmes de programmation linéaire}
 \begin{tikzpicture}
 	\node (n1) at (8,10) {Mixtes - entiers};
@@ -137,6 +168,17 @@ Le problème résultant reste un problème de programmation linéaire si \(f\) e
 		\draw[->] (\from) to (\to);
 	\draw[<->] (n3) to (n4);
 \end{tikzpicture}
+
 \paragraph{}On peut classer les problèmes de programmation linéaire selon la nature de leur variable. Le sens des flèches dans le schéma indique qu'une méthode permettant de résoudre le problème à la destination de la flèche permet également de résoudre un problème à la base de la flèche. On peut donc en conclure qu'un solveur de problème mixant variables entières et continues permet de résoudre tout type de problème de programmation linéaire.
+
 \paragraph{Note:}Un problème à nombre entiers peut également être résolu par un solveur booléens: on pourrait imaginer convertir tous les variables entières en suites de variables booléennes grâce à la conversion binaire du nombre.
+
+\section{Algorithme du simplex}
+\subsection{Intuition}
+L'algorithme du simplex résout des problèmes de programmation linéaire continus, et peut être facilement imaginé dans le cas d'un problème à deux variables continues \((x,y)\). Représentons dans le plan chacune des contraintes comme des sous-ensembles du plan. L'ensemble des solutions admissibles (qui est l'intersection de toutes ces régions) est alors représenté par un polygone.
+\begin{center}\textbf{\textbf{}}
+\includegraphics{simplex-xy.png}
+\end{center}
+On peut prouver que la solution se trouve sur un des sommets du polygone. L'algorithme du simplex démarre sur l'un de ces sommets et passe de sommet en sommet vers la solution optimale, toujours en améliorant la solution courante.
+
 \end{document}
