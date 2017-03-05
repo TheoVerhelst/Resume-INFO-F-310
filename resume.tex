@@ -1,4 +1,4 @@
-\documentclass[a4paper]{article}
+\documentclass[a4paper]{report}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -8,6 +8,7 @@
 \usepackage{amsfonts}
 \usepackage{textcomp}
 \usepackage{graphicx}
+\usepackage{tikz}
 
 \author{Théo Verhelst}
 \title{Résumé du cours d'Algorithmique et Recherche Opérationelle\\
@@ -17,14 +18,14 @@
 \maketitle
 \tableofcontents
 
-\section{Introduction}
+\chapter{Introduction}
 \paragraph{}
 Parmi les nombreux domaines compris dans l'algorithmique et la recherche
 opérationelle, dans ce cours seront abordés la \emph{programmation mathématique}
 et les \emph{méthodes combinatoires dans les graphes}.
 
-\section{Programmation mathématique}
-\subsection{Définition de la programmation mathématique}
+\chapter{Programmation mathématique}
+\section{Définition de la programmation mathématique}
 \paragraph{}
 La programmation mathématique est une modélisation de problèmes (qui peuvent
 provenir d'une large gamme de domaines) ainsi que leur résolution.
@@ -32,22 +33,28 @@ provenir d'une large gamme de domaines) ainsi que leur résolution.
 par un tuple \((z, G)\), où
 \[z:\mathbb{R}^n\to\mathbb{R}:(x_1,\dots,x_n)\mapsto f(x_1,\dots,x_n)\]
 est appelée \emph{fonction économique} (ou encore \emph{fonction de coût}), et
-où \[G=\{(g_j(x_1,\dots,x_n)\star b_j)\;\forall j\in[1,m]\},\;\star\in\{=,\ge,\le\}\]
+où \[\star\in\{=,\ge,\le\},\;G=\{(g_j(x_1,\dots,x_n)\star b_j)\;\forall j\in[1,m]\}\]
 sont appelées \emph{contraintes}.
 \paragraph{Notation:}On notera
-\[g_j(x_1,\dots,x_n\begin{Bmatrix}\le\\\ge\\=\end{Bmatrix}b_j\quad\forall j\in[1,m]\]
+\[g_j(x_1,\dots,x_n)\begin{Bmatrix}\le\\\ge\\=\end{Bmatrix}b_j\quad\forall j\in[1,m]\]
 \paragraph{Définition:}
 Résoudre un problème de programmation mathématique consiste à trouver les
-valeurs \(x_i\;\,\forall i\in[1,n]\) qui maximisent, minimisent ou rapprochent
-le plus possible d'une valeur donnée la fonction économique \(z\),
+valeurs \(x_i\;\,\forall i\in[1,n]\) qui maximisent ou minimisent le plus
+possible d'une valeur donnée la fonction économique \(z\),
 tout en vérifiant toutes les contraintes \(g_j\).
+\paragraph{Définition:}
+Pour une solution donnée \((x_1,\dots,x_n)\), on dit qu'une contrainte
+d'indice \(j\) est saturée quand:
+\[g_j(x_1,\dots,x_n)=b_j\]
 
-\paragraph{}
-\emph{Définition: }
+\paragraph{Note:}
+Cette notion n'est intéressante que pour les contraintes à inégalités, et représente le cas où une ressource est utilisée à son maximum.
+
+\paragraph{Définition:}
 Quand les fonctions \(f\) et \(g_j\) sont linéaires en \(x_i\), alors le
 problème est appelé problème de programmation linéaire.
 
-\subsection{Exemples de problèmes de programmation mathématique}
+\section{Exemples de problèmes de programmation mathématique}
 \paragraph{Le problème du sac à dos} Supposons que, dans l'optique d'une
 randonnée en montagne, l'on cherche à remplir au mieux un sac à dos avec des
 aliments ayant chacun un poids et une valeur énergétique, en sachant que l'on ne
@@ -106,7 +113,7 @@ tel que posé pour visiter tous les états des États-Unis), on a à une vache p
 \(10^{69}\) solutions. Leur énumération est simplement impossible, même avec le
 plus puissant des ordinateur connus.
 
-\subsection{Respect d'un nombre paramétrique de contraintes}
+\section{Respect d'un nombre paramétrique de contraintes}
 On peut étendre la définition de la programmation mathématique en permettant
 de ne respecter qu'un nombre \(m'\) de contraintes, avec \(m'<m\).
 Pour cela, introduisons \(m\) variables booléennes \(\delta_i\) qui indiqueront
@@ -118,4 +125,18 @@ et rajouter la contrainte suivante:
 \[\sum_{i=1}^{m}\delta_i\ge m'\]
 Le problème résultant reste un problème de programmation linéaire si \(f\) et
 \(g\) sont des fonctions linéaires.
+\section{Classification des problèmes de programmation linéaire}
+\begin{tikzpicture}
+	\node (n1) at (8,10) {Mixtes - entiers};
+	\node (n2) at (6,8)  {Mixtes - booléens};
+	\node (n3) at (8,6)  {Booléens};
+	\node (n4) at (10,8) {Entiers};
+	\node (n5) at (4,6)  {Continus};
+	
+	\foreach \from/\to in {n2/n1, n4/n1, n5/n2, n3/n2}
+		\draw[->] (\from) to (\to);
+	\draw[<->] (n3) to (n4);
+\end{tikzpicture}
+\paragraph{}On peut classer les problèmes de programmation linéaire selon la nature de leur variable. Le sens des flèches dans le schéma indique qu'une méthode permettant de résoudre le problème à la destination de la flèche permet également de résoudre un problème à la base de la flèche. On peut donc en conclure qu'un solveur de problème mixant variables entières et continues permet de résoudre tout type de problème de programmation linéaire.
+\paragraph{Note:}Un problème à nombre entiers peut également être résolu par un solveur booléens: on pourrait imaginer convertir tous les variables entières en suites de variables booléennes grâce à la conversion binaire du nombre.
 \end{document}
