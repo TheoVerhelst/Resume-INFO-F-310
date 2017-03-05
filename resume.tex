@@ -83,6 +83,10 @@ la fonction économique \(z\), \(A\) est la matrices de coefficients des contrai
 \[x_i=y_i-z_i\]
 où \(y_i,z_i\) sont deux nouvelles variables dans \(\mathbb{R}^+\).
 
+\paragraph{Note:}On ne considère que la minimisation de la fonction
+économique, car on peut ramener un problème de maximisation en un
+problème de minimisation en prenant l'opposé de la fonction économique.
+
 \section{Exemples de problèmes de programmation mathématique}
 \paragraph{Le problème du sac à dos} Supposons que, dans l'optique d'une
 randonnée en montagne, l'on cherche à remplir au mieux un sac à dos avec des
@@ -171,7 +175,7 @@ Le problème résultant reste un problème de programmation linéaire si \(f\) e
 
 \paragraph{}On peut classer les problèmes de programmation linéaire selon la nature de leur variable. Le sens des flèches dans le schéma indique qu'une méthode permettant de résoudre le problème à la destination de la flèche permet également de résoudre un problème à la base de la flèche. On peut donc en conclure qu'un solveur de problème mixant variables entières et continues permet de résoudre tout type de problème de programmation linéaire.
 
-\paragraph{Note:}Un problème à nombre entiers peut également être résolu par un solveur booléens: on pourrait imaginer convertir tous les variables entières en suites de variables booléennes grâce à la conversion binaire du nombre.
+\paragraph{Note:}Un problème à nombre entiers peut également être résolu par un solveur booléens: on pourrait imaginer convertir tous les variables entières en suites de variables booléennes grâce à la représentation binaire du nombre.
 
 \section{Algorithme du simplex}
 \subsection{Intuition}
@@ -180,5 +184,19 @@ L'algorithme du simplex résout des problèmes de programmation linéaire contin
 \includegraphics{simplex-xy.png}
 \end{center}
 On peut prouver que la solution se trouve sur un des sommets du polygone. L'algorithme du simplex démarre sur l'un de ces sommets et passe de sommet en sommet vers la solution optimale, toujours en améliorant la solution courante.
+\subsection{Reformulation du problème}
+Étant donné un problème continu linéaire
+\[\begin{cases}
+\text{Max } z=cx \\
+Ax \le b \\
+x_i\ge0\;\forall i\in[1,n]
+\end{cases}\]
+On introduit \(m\) nouvelles variables non-strictement positives
+\([t_1,\dots,t_m]=t\), et on reformule les contraintes comme suit:
+\[Ax+t=b\]
+Les variables \(t_j\) sont appelées variables d'écart, et représentent la
+quantité de ressource qui est encore disponible pour une contrainte donnée.
+On en déduit que quand \(t_j=0\), la contrainte \(j\) est saturée.
+
 
 \end{document}
