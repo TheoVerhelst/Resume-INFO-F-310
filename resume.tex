@@ -15,10 +15,13 @@
 \title{Résumé du cours d'Algorithmique et Recherche Opérationelle\\
 \emph{INFO-F310}}
 
-\newtheorem{def}{Définition:}
-\newtheorem{nota}{Notation:}
-\newtheorem{note}{Note:}
-\newtheorem{res}{Résultat:}
+\theoremstyle{definition}
+\newtheorem*{definition}{Définition}
+\newtheorem*{notation}{Notation}
+\theoremstyle{remark}
+\newtheorem*{note}{Note}
+\theoremstyle{plain}
+\newtheorem*{result}{Résultat}
 
 \begin{document}
 \maketitle
@@ -36,18 +39,24 @@ et les \emph{méthodes combinatoires dans les graphes}.
 La programmation mathématique est une modélisation de problèmes (qui peuvent
 provenir d'une large gamme de domaines) ainsi que leur résolution.
 
-\paragraph{Définition:} Un problème de programmation mathématique est défini
+\begin{definition}
+Un problème de programmation mathématique est défini
 par un tuple \((z, G)\), où
 \[z:E^n\to E:(x_1,\dots,x_n)\mapsto f(x_1,\dots,x_n)\]
 est appelée \emph{fonction économique} (ou encore \emph{fonction de coût}), et
 où \[\star\in\{=,\ge,\le\},\;G=\{(g_j(x_1,\dots,x_n)\star b_j)\;\forall
 j\in[1,m]\}\] sont appelées \emph{contraintes}.
 \((x_1,\dots,x_n)\) sont les \emph{variables} du problème.
+\end{definition}
 
-\paragraph{Notation:}On notera
+\begin{notation}
+On notera
 \[g_j(x_1,\dots,x_n)\begin{Bmatrix}\le\\\ge\\=\end{Bmatrix}b_j\quad\forall
 j\in[1,m]\]
-\paragraph{Définition:}On classe les problèmes selon la nature de l'ensemble
+\end{notation}
+
+\begin{definition}
+On classe les problèmes selon la nature de l'ensemble
 \(E\):
 \begin{itemize}
 	\item \(E=\mathbb{R}\) correspond aux problèmes continus
@@ -56,22 +65,27 @@ j\in[1,m]\]
 \end{itemize}
 Ces classes peuvent être mixées, si toutes les variables ou contraintes ne sont
 pas définies dans le même ensemble.
+\end{definition}
 
-\paragraph{Définition:}
+\begin{definition}
 Résoudre un problème de programmation mathématique consiste à trouver les
 valeurs \((x_1,\dots,x_n)\) qui maximisent ou minimisent le plus
 possible d'une valeur donnée la fonction économique \(z\),
 tout en satisfaisant toutes les contraintes \(g_j\).
+\end{definition}
 
-\paragraph{Définition:}
+\begin{definition}
 Pour une solution donnée \((x_1,\dots,x_n)\), on dit qu'une contrainte
 d'indice \(j\) est saturée quand:
 \[g_j(x_1,\dots,x_n)=b_j\]
 Cette notion n'est intéressante que pour les contraintes à inégalités, et
 représente le cas où une ressource est utilisée à son maximum.
-\paragraph{Définition:}
+\end{definition}
+
+\begin{definition}
 Quand les fonctions \(f\) et \(g_j\) sont linéaires en \(x_i\), alors le
 problème est appelé problème de programmation linéaire.
+\end{definition}
 
 \section{Classification des problèmes de programmation linéaire}
 \begin{tikzpicture}
@@ -92,9 +106,11 @@ méthode permettant de résoudre le problème à la destination de la flèche pe
 également de résoudre un problème à la base de la flèche. On peut donc en
 conclure qu'un solveur de problème mixant variables entières et continues permet
 de résoudre tout type de problème de programmation linéaire.
-\paragraph{Note:}Un problème à nombre entiers peut également être résolu par un
+\begin{note}
+Un problème à nombre entiers peut également être résolu par un
 solveur booléens: on pourrait imaginer convertir tous les variables entières en
 suites de variables booléennes grâce à la représentation binaire du nombre.
+\end{note}
 
 \section{Respect d'un nombre paramétrique de contraintes}
 On peut étendre la définition de la programmation mathématique en permettant
@@ -168,31 +184,58 @@ x \ge 0
 \end{cases}\]
 
 \subsection{Définitions}
-\paragraph{Définition:}Une \emph{solution} est une instance du vecteur \(x\)
-telle que \(Ax=b\).
-\paragraph{Définition:}Une \emph{solution admissible} est une instance du
+\begin{definition}
+Une \emph{solution} est une instance du vecteur \(x\) telle que \(Ax=b\).
+\end{definition}
+
+\begin{definition}
+Une \emph{solution admissible} est une instance du
 vecteur \(x\) telle que \(Ax=b\) et \(x \ge 0\).
-\paragraph{Définition:}Une \emph{base} \(B\) est une matrice carrée \(m\times
+\end{definition}
+
+\begin{definition}
+Une \emph{base} \(B\) est une matrice carrée \(m\times
 m\) extraite de la matrice \(A\), avec \(\det(B)\ne 0\). On parlera
 d'\emph{indices de base} (réciproquement \emph{hors base}) et de \emph{variables
 de base} (réciproquement \emph{hors base}) quand ces indices ou variables sont
 inclus dans la base \(B\). Les lignes et colonnes incluses dans \(B\) ne doivent
 pas forcément être adjacentes dans \(A\).
-\paragraph{Définition:}Une solution \(x\) est une \emph{solution de base}
+\end{definition}
+
+\begin{definition}
+Une solution \(x\) est une \emph{solution de base}
 associée à une base \(B\) si et seulement si les variables hors base sont
 nulles.
-\paragraph{Définition:}Une solution de base \(x\) est \emph{explicitée} si et
+\end{definition}
+
+\begin{definition}
+Une solution de base \(x\) est \emph{explicitée} si et
 seulement si la base associée \(B\) est la matrice unité \(m\times m\).
-\paragraph{Définition:}Un ensemble \(P\) est \emph{convexe} si est seulement
+\end{definition}
+
+\begin{definition}
+Un ensemble \(P\) est \emph{convexe} si est seulement
 si
 \[\forall (p_1,p_2,\alpha)\in P^2\times[0,1],(\alpha p_1+(1-\alpha)p_2)\in P\]
 C'est à dire que étant donné deux points \(p_1,p_2\) dans l'ensemble \(P\),
 tout point appartenant au segment de droite reliant \(p_1\) et \(p_2\)
 appartient également à \(P\).
+\end{definition}
 
 \subsection{Résultats fondamentaux}
-\paragraph{Résultat:} L'ensemble des solutions admissibles d'un problème
-linéaire est convexe.
+\begin{result}
+L'ensemble des solutions admissibles d'un problème linéaire est convexe.
+\end{result}
+
+\begin{result}
+L'ensemble des solutions admissibles d'un problème linéaire est
+\begin{itemize}
+	\item Soit vide;
+	\item Soit un polyèdre convexe;
+	\item Soit un ensemble polyédrique;
+	\item Soit convexe non-borné.
+\end{itemize}
+\end{result}
 
 \section{Algorithme du simplex}
 \subsection{Intuition}
