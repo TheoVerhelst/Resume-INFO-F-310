@@ -222,6 +222,14 @@ tout point appartenant au segment de droite reliant \(p_1\) et \(p_2\)
 appartient également à \(P\).
 \end{definition}
 
+\begin{definition}
+Les \emph{sommets} d'un ensemble convexe \(P\) est un sous-ensemble \(S\) de
+\(P\) tel que
+\[S=\{s\in P:\forall (p_1,p_2,\alpha)\in P^2\times[0,1],(\alpha p_1+(1-\alpha)p_2)\neq s\}\]
+C'est à dire tous les points qui ne se situent pas sur une droite reliant deux
+autres points de l'ensemble \(P\), quels que soient ces derniers points.
+\end{definition}
+
 \subsection{Résultats fondamentaux}
 \begin{result}
 L'ensemble des solutions admissibles d'un problème linéaire est convexe.
@@ -235,6 +243,26 @@ L'ensemble des solutions admissibles d'un problème linéaire est
 	\item Soit un ensemble polyédrique;
 	\item Soit convexe non-borné.
 \end{itemize}
+\end{result}
+
+\begin{result}
+Si \(P\) est un polyèdre convexe, alors l'ensemble des solutions optimales
+du problème
+\[\begin{cases}
+\text{Min }cx\\
+x\in P
+\end{cases}\]
+contient au moins un sommet de \(P\).
+\begin{proof}
+Soient \(S_1,\dots,S_k\) les sommets de \(P\) et \(cS_m=\min_icS_i\).\\
+Puisque \(P\) est convexe, chacun de ses points peut être exprimé comme une
+combinaison de ses sommets. Pour toute solution \(x\) du problème, on a
+\[x\in P\Rightarrow \exists \alpha\in[0,1]^k:x=\sum_i \alpha_iS_i\text{ (et}\sum_i\alpha_i=1\text{)}\]
+En multipliant par \(c\), on a
+\[cx=\sum_ic\alpha_iS_i\ge cS_m\]
+Donc, le sommet \(S_m\) ayant la plus petite évaluation parmis les autres
+sommets est une des solution optimale.
+\end{proof}
 \end{result}
 
 \section{Algorithme du simplex}
