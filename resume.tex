@@ -6,6 +6,7 @@
 \usepackage[top=1.5cm, left=2.5cm, bottom=1.5cm, right=2.5cm]{geometry}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{amsthm}
 \usepackage{textcomp}
 \usepackage{graphicx}
 \usepackage{tikz}
@@ -13,6 +14,11 @@
 \author{Théo Verhelst}
 \title{Résumé du cours d'Algorithmique et Recherche Opérationelle\\
 \emph{INFO-F310}}
+
+\newtheorem{def}{Définition:}
+\newtheorem{nota}{Notation:}
+\newtheorem{note}{Note:}
+\newtheorem{res}{Résultat:}
 
 \begin{document}
 \maketitle
@@ -34,58 +40,235 @@ provenir d'une large gamme de domaines) ainsi que leur résolution.
 par un tuple \((z, G)\), où
 \[z:E^n\to E:(x_1,\dots,x_n)\mapsto f(x_1,\dots,x_n)\]
 est appelée \emph{fonction économique} (ou encore \emph{fonction de coût}), et
-où \[\star\in\{=,\ge,\le\},\;G=\{(g_j(x_1,\dots,x_n)\star b_j)\;\forall j\in[1,m]\}\]
-sont appelées \emph{contraintes}.
+où \[\star\in\{=,\ge,\le\},\;G=\{(g_j(x_1,\dots,x_n)\star b_j)\;\forall
+j\in[1,m]\}\] sont appelées \emph{contraintes}.
+\((x_1,\dots,x_n)\) sont les \emph{variables} du problème.
 
 \paragraph{Notation:}On notera
-\[g_j(x_1,\dots,x_n)\begin{Bmatrix}\le\\\ge\\=\end{Bmatrix}b_j\quad\forall j\in[1,m]\]
-
-\paragraph{Définition:}On classe les problèmes selon la nature de l'ensemble \(E\):
+\[g_j(x_1,\dots,x_n)\begin{Bmatrix}\le\\\ge\\=\end{Bmatrix}b_j\quad\forall
+j\in[1,m]\]
+\paragraph{Définition:}On classe les problèmes selon la nature de l'ensemble
+\(E\):
 \begin{itemize}
 	\item \(E=\mathbb{R}\) correspond aux problèmes continus
-	\item \(E=\mathbb{R}\) correspond aux problèmes entiers
+	\item \(E=\mathbb{Z}\) correspond aux problèmes entiers
 	\item \(E=\{1,0\}\) correspond aux problèmes booléens
 \end{itemize}
-Ces classes peuvent être mixées, si \(E\) est l'union de plusieurs de ces sous-ensembles.
+Ces classes peuvent être mixées, si toutes les variables ou contraintes ne sont
+pas définies dans le même ensemble.
 
 \paragraph{Définition:}
 Résoudre un problème de programmation mathématique consiste à trouver les
 valeurs \((x_1,\dots,x_n)\) qui maximisent ou minimisent le plus
 possible d'une valeur donnée la fonction économique \(z\),
-tout en vérifiant toutes les contraintes \(g_j\).
+tout en satisfaisant toutes les contraintes \(g_j\).
 
 \paragraph{Définition:}
 Pour une solution donnée \((x_1,\dots,x_n)\), on dit qu'une contrainte
 d'indice \(j\) est saturée quand:
 \[g_j(x_1,\dots,x_n)=b_j\]
-Cette notion n'est intéressante que pour les contraintes à inégalités, et représente le cas où une ressource est utilisée à son maximum.
-
+Cette notion n'est intéressante que pour les contraintes à inégalités, et
+représente le cas où une ressource est utilisée à son maximum.
 \paragraph{Définition:}
 Quand les fonctions \(f\) et \(g_j\) sont linéaires en \(x_i\), alors le
 problème est appelé problème de programmation linéaire.
 
+\section{Classification des problèmes de programmation linéaire}
+\begin{tikzpicture}
+	\node (n1) at (8,10) {Mixtes - entiers};
+	\node (n2) at (6,8)  {Mixtes - booléens};
+	\node (n3) at (8,6)  {Booléens};
+	\node (n4) at (10,8) {Entiers};
+	\node (n5) at (4,6)  {Continus};
+
+	\foreach \from/\to in {n2/n1, n4/n1, n5/n2, n3/n2}
+		\draw[->,thick] (\from) -- (\to);
+	\draw[<->,thick] (n3) -- (n4);
+\end{tikzpicture}
+
+\paragraph{}On peut classer les problèmes de programmation linéaire selon la
+nature de leur variable. Le sens des flèches dans le schéma indique qu'une
+méthode permettant de résoudre le problème à la destination de la flèche permet
+également de résoudre un problème à la base de la flèche. On peut donc en
+conclure qu'un solveur de problème mixant variables entières et continues permet
+de résoudre tout type de problème de programmation linéaire.
+\paragraph{Note:}Un problème à nombre entiers peut également être résolu par un
+solveur booléens: on pourrait imaginer convertir tous les variables entières en
+suites de variables booléennes grâce à la représentation binaire du nombre.
+
+\section{Respect d'un nombre paramétrique de contraintes}
+On peut étendre la définition de la programmation mathématique en permettant
+de ne respecter qu'un nombre \(m'\) de contraintes, avec \(m'<m\).
+Pour cela, introduisons \(m\) variables booléennes \(\delta_i\) qui indiqueront
+si la contrainte \(i\) est respectée. Introduisons également un nombre \(M\),
+qui est supérieur à toutes les valeurs que peuvent prendre les contraintes
+\(g_i\). On peut alors réécrire les contraintes
+comme suit:
+\[g_i(x_1,\dots,x_n)-b_i\begin{Bmatrix}\le\\\ge\\=\end{Bmatrix}M(1-\delta_i)\]
+et rajouter la contrainte suivante:
+\[\sum_{i=1}^{m}\delta_i\ge m'\]
+Le problème résultant reste un problème de programmation linéaire si \(f\) et
+\(g\) sont des fonctions linéaires.
+
 \section{Problèmes  de programmation linéaire continus}
-On commencera par exprimer les problèmes de programmation linéaire continus sous forme matricielle:
+\subsection{Forme matricielle}
+On commencera par exprimer les problèmes de programmation linéaire continus sous
+forme matricielle:
 \[\begin{cases}
-\text{Max } z=cx \quad & z\in\mathbb{R},\,c\in\mathbb{R}^{1\times n},\,
-x\in\mathbb{R}^{n\times 1}_+ \\
-Ax \le b               & A\in\mathbb{R}^{m\times n},\,
-b\in\mathbb{R}^{m\times 1}
+	\text{Min\;} cx & c\in\mathbb{R}^{1\times n},\, x\in\mathbb{R}^{n\times 1}_+
+	\\
+	Ax \le b        & A\in\mathbb{R}^{m\times n},\, b\in\mathbb{R}^{m\times 1}
+	\\
+	x \ge 0
 \end{cases}\]
 où \(x\) est le vecteur de variables, \(c\) est le vecteur de coefficients de
-la fonction économique \(z\), \(A\) est la matrices de coefficients des contraintes, et \(b\) est le vecteur de termes indépendants des contraintes.
+la fonction économique \(z\), \(A\) est la matrices de coefficients des
+contraintes, et \(b\) est le vecteur de termes indépendants des contraintes.
+Un certain nombre de restrictions sont imposées sur la formulation du problème,
+car on peut toujours se ramener à ce problème plus restreint:
+\begin{itemize}
+	\item On se passe des contraintes en \(\ge\) et \(=\), car on peut
+	toujours reformuler ces contraintes avec d'autres contraintes en \(\le\):
+	\[a=b\Leftrightarrow a\le b\land -a\le-b\]
+	\[a\ge b\Leftrightarrow -a\le-b\]
 
-\paragraph{Note:}On se passe des contraintes en \(\ge\) et \(=\), car on peut toujours reformuler ces contraintes avec d'autres contraintes en \(\le\):
-\[a=b\Leftrightarrow a\le b\land -a\le-b\]
-\[a\ge b\Leftrightarrow -a\le-b\]
+	\item On ne considère que les  problèmes où les variables
+	\((x_1,\dots,x_n)\) sont non-strictement positives, car ces variables
+	représentent souvent des quantités, et ne peuvent donc pas être négatives. Si
+	toutefois une variable \(x_i,\,i\in[1,n]\) peut être négative, on se ramène dans
+	le cas non-strictement positif en posant
+	\[x_i=y_i-z_i\]
+	où \(y_i,z_i\) sont deux nouvelles variables dans \(\mathbb{R}^+\).
 
-\paragraph{Note:}On ne considère que les  problèmes où les variables \((x_1,\dots,x_n)\) sont non-strictement positives, car ces variables représentent souvent des quantités, et ne peuvent donc pas être négatives. Si toutefois une variable \(x_i,\,i\in[1,n]\) peut être négative, on se ramène dans le cas non-strictement positif en posant
-\[x_i=y_i-z_i\]
-où \(y_i,z_i\) sont deux nouvelles variables dans \(\mathbb{R}^+\).
+	\item On ne considère que la minimisation de la fonction
+	économique, car on peut ramener un problème de maximisation en un
+	problème de minimisation en prenant l'opposé de la fonction économique.
+\end{itemize}
 
-\paragraph{Note:}On ne considère que la minimisation de la fonction
-économique, car on peut ramener un problème de maximisation en un
-problème de minimisation en prenant l'opposé de la fonction économique.
+\subsection{Variables d'écart}
+Étant donné un problème continu linéaire
+\[\begin{cases}
+\text{Min\;} cx \\
+Ax \le b \\
+x \ge 0
+\end{cases}\]
+Afin de pouvoir résoudre le problème avec les outils de l'algèbre linéaire, on
+introduit \(m\) nouvelles variables non-strictement positives
+\([t_1,\dots,t_m]=t\), et on reformule les contraintes comme suit:
+\[Ax+t=b\]
+Les variables \(t_j\) sont appelées variables d'écart, et représentent la
+quantité de ressource qui est encore disponible pour une contrainte donnée.
+On en déduit que quand \(t_j=0\), la contrainte \(j\) est saturée.
+Par la suite, nous admettrons l'utilisation implicite de variables d'écart,
+et considererons généralement les problèmes de la forme
+\[\begin{cases}
+\text{Min\;} cx \\
+Ax = b \\
+x \ge 0
+\end{cases}\]
+
+\subsection{Définitions}
+\paragraph{Définition:}Une \emph{solution} est une instance du vecteur \(x\)
+telle que \(Ax=b\).
+\paragraph{Définition:}Une \emph{solution admissible} est une instance du
+vecteur \(x\) telle que \(Ax=b\) et \(x \ge 0\).
+\paragraph{Définition:}Une \emph{base} \(B\) est une matrice carrée \(m\times
+m\) extraite de la matrice \(A\), avec \(\det(B)\ne 0\). On parlera
+d'\emph{indices de base} (réciproquement \emph{hors base}) et de \emph{variables
+de base} (réciproquement \emph{hors base}) quand ces indices ou variables sont
+inclus dans la base \(B\). Les lignes et colonnes incluses dans \(B\) ne doivent
+pas forcément être adjacentes dans \(A\).
+\paragraph{Définition:}Une solution \(x\) est une \emph{solution de base}
+associée à une base \(B\) si et seulement si les variables hors base sont
+nulles.
+\paragraph{Définition:}Une solution de base \(x\) est \emph{explicitée} si et
+seulement si la base associée \(B\) est la matrice unité \(m\times m\).
+\paragraph{Définition:}Un ensemble \(P\) est \emph{convexe} si est seulement
+si
+\[\forall (p_1,p_2,\alpha)\in P^2\times[0,1],(\alpha p_1+(1-\alpha)p_2)\in P\]
+C'est à dire que étant donné deux points \(p_1,p_2\) dans l'ensemble \(P\),
+tout point appartenant au segment de droite reliant \(p_1\) et \(p_2\)
+appartient également à \(P\).
+
+\subsection{Résultats fondamentaux}
+\paragraph{Résultat:} L'ensemble des solutions admissibles d'un problème
+linéaire est convexe.
+
+\section{Algorithme du simplex}
+\subsection{Intuition}
+L'algorithme du simplex résout des problèmes de programmation linéaire continus,
+et peut être facilement imaginé dans le cas d'un problème à deux variables
+continues \((x,y)\). Représentons dans le plan chacune des contraintes comme
+l'ensemble des points satisfaint cette contrainte. L'ensemble des solutions
+admissibles (qui est l'intersection de toutes ces régions) est alors représenté
+par un polygone.
+\begin{center}\textbf{\textbf{}}
+\includegraphics[width=\textwidth]{simplex-xy.png}
+\end{center}
+On peut prouver que la solution se trouve sur un des sommets du polygone (ce
+sera fait plus tard). L'algorithme du simplex démarre sur l'un de ces sommets et
+passe de sommet en sommet vers la solution optimale, toujours en améliorant la
+solution courante.
+
+\section{Notes}
+Le problème dual de
+\[Max\;cx\]
+\[Ax\le b\]
+\[x\in\mathbb{R}^+\]
+est
+\[Min\;yb\]
+\[yA\ge c\]
+Les deux on les même solutions, le premier est un problème d'optimisation de
+vente, le deuxième optimise la production.
+\paragraph{}
+Pour passer du primal au dual:
+\[Min\;cx\Rightarrow Max\;(-c)x\Rightarrow Min\;y(-b)\Rightarrow Max\;yb\]
+\[Ax\ge b\Rightarrow -Ax\le -b\Rightarrow y(-A)\ge -c\Rightarrow yA\le c\]
+Slides p. 48: s.r.s veut dire "sans restriction de signe".
+\paragraph{Démonstration de la dualité des problèmes:}
+On a
+\[Max\;cx; ax\le b\]
+dual de
+\[Min\;yb;yA\ge c\]
+On travaille sur
+\[Min\;cx; Ax=b\Leftrightarrow Min\;cx; Ax\le b;Ax\ge b\]
+\[\Leftrightarrow Max\;-cx; Ax\le b;-Ax\le b\Leftrightarrow Max\;-cx; \tilde
+Ax\le \tilde b\] Avec \(\tilde A_{2m\times m}\) la superposition de \(A\) et
+\(-A\), et pareil pour b.
+\[\Leftrightarrow Min\;y\tilde b;y\tilde A\ge -c\]
+\[y\begin{matrix}A\\-A\end{matrix}\ge -c\]
+\[a_{11}y_{1}+a_{21}y_2+\dots+a_{m1}y_m-a_{11}y_{m+1}-a_{21}y_2-a_{31}y_3-\dots-a_{m2}y_m\]
+Si on rassemble certains termes, on trouve qu'il n'y a pas de restriction de
+signe sur \(y\).
+\[\Leftrightarrow Min\;yb;yA\ge -b\]
+Prenons une solution admissible \(x\) de \(Ax=b\).
+Multiplions par y
+\[yb=yAx\]
+\[\Leftrightarrow yb=yAx\le cx\]
+\[\Leftrightarrow yb\le cx\]
+Le problème primal minimise, et le dual maximise, or la solution du dual est
+plus petite ou égale à celle du dual.\\
+On a un \emph{duality gap} entre les deux solutions, et on peut en déduire que
+si ce gap est nul, on a la solution optimale.
+\paragraph{Autre démonstration:}
+On a
+\[Max\;cx; Ax\le b\]
+dual de
+\[Min\;yb;yA\ge c\]
+
+On réécrit
+\[Max\;cx; Ax+s\le b\]
+dual de
+\[Min\;yb;yA-t\ge c\]
+pour deux solutions \(\tilde x, \tilde t, \tilde y, \tilde s\).
+On va prouver que si on a
+\[\tilde x\cdot\tilde t=0\]
+\[\tilde y\cdot\tilde y=0\]
+alors ces solutions sont optimales.
+Pour cela, commencons par:
+\[c\tilde x=(\tilde yA-t)\tilde x=\tilde yA\tilde x-\tilde t\tilde x\]
+\[=\tilde yA\tilde x=\tilde y(b-\tilde s)=\tilde yb-\tilde y\tilde s\]
+\[=\tilde yb=c\tilde x\;_{\square}\]
 
 \section{Exemples de problèmes de programmation mathématique}
 \paragraph{Le problème du sac à dos} Supposons que, dans l'optique d'une
@@ -129,7 +312,7 @@ Les contraintes sont les suivantes:
 	\item Mais il faut également que le graphe ainsi formé soit connexe ! Pour
 		toute partition de l'ensemble \(V\) des villes en deux sous-ensembles
 		\(S\) et \(\bar S\) tels que \(S\cup\bar S=V\) et
-		\(S\cap\bar S=\emptyset\), il faut qu'il existe un chemin reliant \(S\)
+		\(S\cap\bar S=\emptyset\), il faut qu'il existe un cheMin\;reliant \(S\)
 		et \(\bar S\):
 		\[\sum_{s\in S}\sum_{\bar s\in\bar S}x_{s\bar s}\ge 1\]
 		pour \(x_{s\bar s}=x_{ij}\) si \(s\) et \(\bar s\) correspondent aux
@@ -146,57 +329,5 @@ que le nombre de solutions possibles est \(n!\). Pour \(n=52\) (le problème
 tel que posé pour visiter tous les états des États-Unis), on a à une vache près
 \(10^{69}\) solutions. Leur énumération est simplement impossible, même avec le
 plus puissant des ordinateur connus.
-
-\section{Respect d'un nombre paramétrique de contraintes}
-On peut étendre la définition de la programmation mathématique en permettant
-de ne respecter qu'un nombre \(m'\) de contraintes, avec \(m'<m\).
-Pour cela, introduisons \(m\) variables booléennes \(\delta_i\) qui indiqueront
-si la contrainte \(i\) est respectée. Introduisons également un très grand nombre \(M\),
-qui est beaucoup plus grand que toutes les valeurs que peuvent prendre les variables
-et les paramètres. On peut alors réécrire les contraintes comme suit:
-\[g_i(x_1,\dots,x_n)-b_i\begin{Bmatrix}\le\\\ge\\=\end{Bmatrix}M(1-\delta_i)\]
-et rajouter la contrainte suivante:
-\[\sum_{i=1}^{m}\delta_i\ge m'\]
-Le problème résultant reste un problème de programmation linéaire si \(f\) et
-\(g\) sont des fonctions linéaires.
-
-\section{Classification des problèmes de programmation linéaire}
-\begin{tikzpicture}
-	\node (n1) at (8,10) {Mixtes - entiers};
-	\node (n2) at (6,8)  {Mixtes - booléens};
-	\node (n3) at (8,6)  {Booléens};
-	\node (n4) at (10,8) {Entiers};
-	\node (n5) at (4,6)  {Continus};
-	
-	\foreach \from/\to in {n2/n1, n4/n1, n5/n2, n3/n2}
-		\draw[->] (\from) to (\to);
-	\draw[<->] (n3) to (n4);
-\end{tikzpicture}
-
-\paragraph{}On peut classer les problèmes de programmation linéaire selon la nature de leur variable. Le sens des flèches dans le schéma indique qu'une méthode permettant de résoudre le problème à la destination de la flèche permet également de résoudre un problème à la base de la flèche. On peut donc en conclure qu'un solveur de problème mixant variables entières et continues permet de résoudre tout type de problème de programmation linéaire.
-
-\paragraph{Note:}Un problème à nombre entiers peut également être résolu par un solveur booléens: on pourrait imaginer convertir tous les variables entières en suites de variables booléennes grâce à la représentation binaire du nombre.
-
-\section{Algorithme du simplex}
-\subsection{Intuition}
-L'algorithme du simplex résout des problèmes de programmation linéaire continus, et peut être facilement imaginé dans le cas d'un problème à deux variables continues \((x,y)\). Représentons dans le plan chacune des contraintes comme des sous-ensembles du plan. L'ensemble des solutions admissibles (qui est l'intersection de toutes ces régions) est alors représenté par un polygone.
-\begin{center}\textbf{\textbf{}}
-\includegraphics{simplex-xy.png}
-\end{center}
-On peut prouver que la solution se trouve sur un des sommets du polygone. L'algorithme du simplex démarre sur l'un de ces sommets et passe de sommet en sommet vers la solution optimale, toujours en améliorant la solution courante.
-\subsection{Reformulation du problème}
-Étant donné un problème continu linéaire
-\[\begin{cases}
-\text{Max } z=cx \\
-Ax \le b \\
-x_i\ge0\;\forall i\in[1,n]
-\end{cases}\]
-On introduit \(m\) nouvelles variables non-strictement positives
-\([t_1,\dots,t_m]=t\), et on reformule les contraintes comme suit:
-\[Ax+t=b\]
-Les variables \(t_j\) sont appelées variables d'écart, et représentent la
-quantité de ressource qui est encore disponible pour une contrainte donnée.
-On en déduit que quand \(t_j=0\), la contrainte \(j\) est saturée.
-
 
 \end{document}
