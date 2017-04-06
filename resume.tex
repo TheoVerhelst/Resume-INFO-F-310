@@ -5,6 +5,7 @@
 \usepackage[francais]{babel}
 \usepackage[top=1.5cm, left=2.5cm, bottom=1.5cm, right=2.5cm]{geometry}
 \usepackage{amsmath}
+\usepackage{mathtools}
 \usepackage{amsfonts}
 \usepackage{amsthm}
 \usepackage{textcomp}
@@ -20,9 +21,10 @@
 \newtheorem*{notation}{Notation}
 \theoremstyle{remark}
 \newtheorem*{note}{Note}
+\newtheorem*{example}{Exemple}
 \theoremstyle{plain}
-\newtheorem*{result}{Résultat}
-\newtheorem*{corollary}{Corollaire}
+\newtheorem{theorem}{Théorème}
+\newtheorem{corollary}{Corollaire}
 
 \begin{document}
 \maketitle
@@ -212,6 +214,22 @@ d'\emph{indices de base} (réciproquement \emph{hors base}) et de \emph{variable
 de base} (réciproquement \emph{hors base}) quand ces indices ou variables sont
 inclus dans la base \(B\). Les lignes et colonnes incluses dans \(B\) ne doivent
 pas forcément être adjacentes dans \(A\).
+\begin{example}
+Soit la matrice
+\[A=\begin{bmatrix}
+	a_{11} & \dots  & a_{1m} & \dots  & a_{1n} \\
+	\vdots & \ddots & \vdots & \ddots & \vdots \\
+	a_{m1} & \dots  & a_{mm} & \dots  & a_{mn}
+\end{bmatrix}\]
+Une base \(B\) possible serait la matrice
+\[B=\begin{bmatrix}
+	a_{11} & \dots  & a_{1m} \\
+	\vdots & \ddots & \vdots \\
+	a_{m1} & \dots  & a_{mm}
+\end{bmatrix}\]
+Si et seulement si \(\det(B)\neq 0\). Les variables hors base sont alors
+\((x_{m+1},\dots,x_{n})\).
+\end{example}
 \end{definition}
 
 \begin{definition}
@@ -266,7 +284,8 @@ combinaison linéaire convexe de ses sommets.
 \end{corollary}
 
 \subsection{Résultats fondamentaux}
-\begin{result}
+\begin{theorem}
+\label{P is convex}
 L'ensemble \(P = \{x:Ax\le b,x\ge 0\}\) est convexe.
 \begin{proof}
 Pour toute combinaison linéaire convexe de facteurs \((\alpha, 1-\alpha)\)
@@ -281,52 +300,92 @@ On en conclut que toute combinaison linéaire convexe d'éléments de \(P\) a
 répond également aux contraintes définissant l'ensemble \(P\).
 
 \end{proof}
-\end{result}
+\end{theorem}
 
-\begin{result}
-L'ensemble des solutions admissibles d'un problème linéaire est
+\begin{theorem}
+L'ensemble \(P = \{x:Ax\le b,x\ge 0\}\) est
 \begin{itemize}
 	\item Soit vide;
 	\item Soit un polyèdre convexe;
 	\item Soit un ensemble polyédrique non-borné.
 \end{itemize}
-\end{result}
+\end{theorem}
 
-\begin{result}
+\begin{theorem}
+\label{solutions contains a vertex}
 Si \(P\) est un polyèdre convexe, alors l'ensemble des solutions optimales
-du problème
-\[\begin{cases}
-\text{Min }cx\\
-x\in P
-\end{cases}\]
-contient au moins un sommet de \(P\).
+du problème \(\text{Min }\{cx:x\in P\}\) contient au moins un sommet de \(P\).
 \begin{proof}
-Soient \(s_1,\dots,s_k\) les sommets de \(P\) et \(cs_m=\min_ics_i\).\\
-Puisque \(P\) est convexe, chacun de ses points peut être exprimé comme une
-combinaison de ses sommets. Pour toute solution \(x\) du problème, on a
-\[x\in P\Rightarrow \exists \alpha\in[0,1]^k:x=\sum_i \alpha_is_i\text{
+Soient \(s^{(1)},\dots,s^{(k)}\) les sommets de \(P\) et
+\(cs^{(m)}=\min_ics^{(i)}\).\\ Puisque \(P\) est convexe, chacun de ses points
+peut être exprimé comme une combinaison linéaire convexe de ses sommets. Pour
+toute solution \(x\) du problème, on a
+\[\exists (\alpha_1,\dots,\alpha_k)\in[0,1]^k:x=\sum_i \alpha_is^{(i)}\text{
 (et}\sum_i\alpha_i=1\text{)}\] En multipliant par \(c\), on a
-\[cx=\sum_ic\alpha_is_i\ge cs_m\]
-Donc, le sommet \(s_m\) ayant la plus petite évaluation parmis les autres
+\[cx=\sum_ic\alpha_is^{(i)}\ge cs^{(m)}\]
+Donc, le sommet \(s^{(m)}\) ayant la plus petite évaluation parmis les autres
 sommets est une des solution optimale.
 \end{proof}
-\end{result}
+\end{theorem}
+
+\begin{corollary}
+L'ensemble des solutions optimales d'un problème contient au moins un sommet de
+l'ensemble des solutions admissibles.
+\begin{proof}
+On peut le déduire directement du résultat \ref{P is convex} et du résultat
+\ref{solutions contains a vertex}.
+\end{proof}
+\end{corollary}
 
 \begin{notation}
 \(P_j\) est la \(j\)\ieme \(\,\) colonne de la matrice \(A\).
 On notera également \(P_0=b\).
+On peut alors exprimer les contraintes d'un problème linéaire comme suit:
+\[\sum_{j=1}^n x_jP_j \begin{Bmatrix}\le\\=\end{Bmatrix} P_0\]
 \end{notation}
 
-\begin{result}
+\begin{theorem}
 Si \(A\) est de rang \(m\), alors tout sommet de l'ensemble des solutions
-admissibles est une solution de base admissible.
+admissibles \(P = \{x:Ax=b,x\ge 0\}\) est une solution de base admissible.
 \begin{proof}
-Soit \(s=(s_1,\dots,s_k,0\dots,0)\) une solution admissible, avec
-\(s_i\ge0\;\forall i\in[1,k]\)\\
-Si \(P_1,\dots,P_k\) ne sont pas linéairement indépendants, alors
-\[\exists \alpha\in\mathbb{R}^k:\sum_{j=1}^k\alpha_jP_j=0\]
+Soit \(s=(s_1,\dots,s_k,0\dots,0)\) un sommet de \(P\) (c'est donc une solution
+admissible), avec \(s_i\ge0\;\forall i\in[1,k]\). On peut toujours s'y ramener
+en réordonnant les variables, de manière à avoir les zéros à la fin.\\
+Montrons que \(P_1,\dots,P_k\) sont linéairement indépendants par l'absurde:\\
+Par la notation précédente, on a
+\[\sum_{j=1}^ks_jP_j=P_0=b\]
+Si \(P_1,\dots,P_k\) ne sont pas linéairement indépendants, on a également
+\[\exists (\alpha_1,\dots,\alpha_k)\in\mathbb{R}^k:\sum_{j=1}^k\alpha_jP_j=0\]
+avec \(\alpha_1,\dots,\alpha_k\) non tous nuls.\\
+En choisissant un nombre \(\epsilon\in\mathbb{R}\) tel que \(|\epsilon
+\alpha_j|< s_j \;\forall j\in[1,k]\), on peut écrire:
+\[\begin{dcases}
+	\sum_{j=1}^k(s_j+\epsilon\alpha_j)P_j=P_0 \\
+	\sum_{j=1}^k(s_j-\epsilon\alpha_j)P_j=P_0
+\end{dcases}\]
+On en déduit qu'il existe deux solutions admissibles
+\[x^{(1)} = (s_1+\epsilon\alpha_1,\dots,s_k+\epsilon\alpha_k)\]
+\[x^{(2)} = (s_1+\epsilon\alpha_1,\dots,s_k-\epsilon\alpha_k)\]
+\begin{note}
+On a imposé la condition \(|\epsilon \alpha_j|< s_j \;\forall j\in[1,k]\) afin
+de garantir que \(x^{(1)}\ge0\) et \(x^{(2)}\ge0\).
+\end{note}
+On a donc
+\[s=\frac{1}{2}(x^{(1)}+x^{(2)})\]
+Ce qui est contraire à l'hypothèse de \(s\) étant un sommet. On en conclut que
+\(P_1,\dots,P_k\) sont linéairement indépendants.\\
+Puisque \(A\) est de rang \(m\), il existe au maximum \(m\) vecteurs colonnes
+extraits de \(A\) étant linéairement indépendants entre eux. Donc \(k\le m\).
+\begin{itemize}
+	\item Si \(k=m\), alors \(s\) est la solution admissible de base associée à
+	la base \(B=(P_1\dots P_k)\);
+	\item Sinon, \(k<m\), et \(s\) est la solution admissible de base associée à
+	la base \(B=(P_1\dots P_k\cdot P_{i_1}\dots P_{i_{m-k}})\)
+	construite en choisissant \(m-k\) colonnes dans \(A\) de telle sorte que
+	\(\det(B)\neq 0\). C'est toujours possible, puisque \(A\) est de rang \(m\).
+\end{itemize}
 \end{proof}
-\end{result}
+\end{theorem}
 
 \section{Algorithme du simplex}
 \subsection{Intuition}
