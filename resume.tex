@@ -45,7 +45,7 @@ provenir d'une large gamme de domaines) ainsi que leur résolution.
 \begin{definition}
 Un problème de programmation mathématique est défini
 par un tuple \((z, G)\), où
-\[z:E^n\to E:(x_1,\dots,x_n)\mapsto f(x_1,\dots,x_n)\]
+\[z:E^n\to E\]
 est appelée \emph{fonction économique} (ou encore \emph{fonction de coût}), et
 où \[\star\in\{=,\ge,\le\},\;G=\{(g_j(x_1,\dots,x_n)\star b_j)\;\forall
 j\in[1,m]\}\] sont appelées \emph{contraintes}.
@@ -72,9 +72,8 @@ pas définies dans le même ensemble.
 
 \begin{definition}
 Résoudre un problème de programmation mathématique consiste à trouver les
-valeurs \((x_1,\dots,x_n)\) qui maximisent ou minimisent le plus
-possible d'une valeur donnée la fonction économique \(z\),
-tout en satisfaisant toutes les contraintes \(g_j\).
+valeurs \((x_1,\dots,x_n)\) qui maximisent ou minimisent le plus possible la
+fonction économique \(z\), tout en satisfaisant toutes les contraintes \(g_j\).
 \end{definition}
 
 \begin{definition}
@@ -86,7 +85,7 @@ représente le cas où une ressource est utilisée à son maximum.
 \end{definition}
 
 \begin{definition}
-Quand les fonctions \(f\) et \(g_j\) sont linéaires en \(x_i\), alors le
+Quand les fonctions \(z\) et \(g_j\) sont linéaires en \(x_i\), alors le
 problème est appelé problème de programmation linéaire.
 \end{definition}
 
@@ -212,8 +211,8 @@ Une \emph{base} \(B\) est une matrice carrée \(m\times
 m\) extraite de la matrice \(A\), avec \(\det(B)\ne 0\). On parlera
 d'\emph{indices de base} (réciproquement \emph{hors base}) et de \emph{variables
 de base} (réciproquement \emph{hors base}) quand ces indices ou variables sont
-inclus dans la base \(B\). Les lignes et colonnes incluses dans \(B\) ne doivent
-pas forcément être adjacentes dans \(A\).
+inclus (réciproquement exclus) dans la base \(B\). Les lignes et colonnes
+incluses dans \(B\) ne doivent pas forcément être adjacentes dans \(A\).
 \begin{example}
 Soit la matrice
 \[A=\begin{bmatrix}
@@ -246,7 +245,9 @@ seulement si la base associée \(B\) est la matrice unité \(m\times m\).
 \begin{definition}
 Une \emph{combinaison linéaire convexe} d'éléments \(p_1,\dots,p_n\) est
 une expression de la forme \[\sum_{i=1}^n\alpha_ip_i\] où \(\alpha_i\in[0,1]
-\;\forall i\in[1,n]\) et où \(\sum_{i=1}^n\alpha_i=1\)
+\;\forall i\in[1,n]\) et où \(\sum_{i=1}^n\alpha_i=1\). \\
+Par exemple, pour deux points \(p_1\) et \(p_2\), cette expression représente le
+segment de droite reliant \(p_1\) et \(p_2\).
 \end{definition}
 
 \begin{definition}
@@ -275,7 +276,7 @@ combinaison linéaire convexe de ses sommets.
 \(p\) est soit un sommet, soit \(p\) n'est pas un sommet:
 \begin{itemize}
 	\item Si il est un sommet, alors il est effectivement la combinaison
-	linéaire convexe trivialle \(p\).
+	linéaire convexe triviale \(p\).
 	\item Sinon, par la définition des sommets, il peut être exprimé par
 	une combinaison linéaire convexe d'autres points de \(P\), par exemple ses
 	sommets.
@@ -345,8 +346,9 @@ On peut alors exprimer les contraintes d'un problème linéaire comme suit:
 \end{notation}
 
 \begin{theorem}
-Si \(A\) est de rang \(m\), alors tout sommet de l'ensemble des solutions
-admissibles \(P = \{x:Ax=b,x\ge 0\}\) est une solution de base admissible.
+Étant donné le problème linéaire \(\text{Min }\{cx:x\in P\}\) avec
+\(P = \{x:Ax=b,x\ge 0\}\), si \(A\) est de rang \(m\), alors tout sommet de
+\(P\) est une solution de base admissible.
 \begin{proof}
 Soit \(s=(s_1,\dots,s_k,0\dots,0)\) un sommet de \(P\) (c'est donc une solution
 admissible), avec \(s_i\ge0\;\forall i\in[1,k]\). On peut toujours s'y ramener
@@ -384,6 +386,32 @@ extraits de \(A\) étant linéairement indépendants entre eux. Donc \(k\le m\).
 	construite en choisissant \(m-k\) colonnes dans \(A\) de telle sorte que
 	\(\det(B)\neq 0\). C'est toujours possible, puisque \(A\) est de rang \(m\).
 \end{itemize}
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Étant donné le problème linéaire \(\text{Min }\{cx:x\in P\}\) avec
+\(P = \{x:Ax=b,x\ge 0\}\), si \(A\) est de rang \(m\), alors toute solution de
+base admissible du problème est un sommet de \(P\) (réciproque du théorème
+précédent).
+\begin{proof}
+Soit \(s=(s_1,\dots,s_m,0,\dots,0)\) une solution de base admissible. Cela
+signifie que la matrice \(B=(P_1\dots P_m)\) est une base. Prouvons que \(s\)
+est un sommet:
+\paragraph{}
+Si \(s_i=0\;\forall i\in[1,m]\), alors \(s\) ne peut pas être exprimé comme une
+combinaison linéaire convexe de deux autres éléments de \(P\), et donc \(s\) est
+un sommet.
+\paragraph{}
+Sinon, prouvons par l'absurde que \(s\) est aussi un sommet. Si \(s\) n'est pas
+un sommet, alors
+\[\exists (x^{(1)},x^{(2)},\alpha)\in P^2\times[0,1]:s=\alpha x^{(1)}+(1-\alpha)x^{(2)}\]
+Et comme \(x^{(1)}\ge0\) et \(x^{(2)}\ge0\), on peut en déduire que
+\[x^{(1)}_i=x^{(2)}_i=0\;\forall i\in[m+1,n]\]
+On peut alors écrire
+\[Bx^{(1)}=Bx^{(2)}=b\]
+Et puisque \(B\) est carrée et inversible, on a \(x^{(1)}=x^{(2)}=S\).
+Donc \(S\) est un sommet.
 \end{proof}
 \end{theorem}
 
