@@ -22,6 +22,7 @@
 \newtheorem*{note}{Note}
 \theoremstyle{plain}
 \newtheorem*{result}{Résultat}
+\newtheorem*{corollary}{Corollaire}
 
 \begin{document}
 \maketitle
@@ -150,9 +151,9 @@ car on peut toujours se ramener à ce problème plus restreint:
 
 	\item On ne considère que les  problèmes où les variables
 	\((x_1,\dots,x_n)\) sont non-strictement positives, car ces variables
-	représentent souvent des quantités, et ne peuvent donc pas être négatives. Si
-	toutefois une variable \(x_i,\,i\in[1,n]\) peut être négative, on se ramène dans
-	le cas non-strictement positif en posant
+	représentent souvent des quantités, et ne peuvent donc pas être négatives.
+	Si toutefois une variable \(x_i,\,i\in[1,n]\) peut être négative, on se
+	ramène dans le cas non-strictement positif en posant
 	\[x_i=y_i-z_i\]
 	où \(y_i,z_i\) sont deux nouvelles variables dans \(\mathbb{R}^+\).
 
@@ -214,8 +215,14 @@ seulement si la base associée \(B\) est la matrice unité \(m\times m\).
 \end{definition}
 
 \begin{definition}
-Un ensemble \(P\) est \emph{convexe} si est seulement
-si
+Une \emph{combinaison linéaire convexe} d'éléments \(p_1,\dots,p_n\) est
+une expression de la forme \[\sum_{i=1}^n\alpha_ip_i\] où \(\alpha_i\in[0,1]
+\;\forall i\in[1,n]\) et où \(\sum_{i=1}^n\alpha_i=1\)
+\end{definition}
+
+\begin{definition}
+Un ensemble \(P\) est \emph{convexe} si est seulement si toute combinaison
+linéaire convexe de ses éléments appartient également à \(P\):
 \[\forall (p_1,p_2,\alpha)\in P^2\times[0,1],(\alpha p_1+(1-\alpha)p_2)\in P\]
 C'est à dire que étant donné deux points \(p_1,p_2\) dans l'ensemble \(P\),
 tout point appartenant au segment de droite reliant \(p_1\) et \(p_2\)
@@ -223,16 +230,45 @@ appartient également à \(P\).
 \end{definition}
 
 \begin{definition}
-Les \emph{sommets} d'un ensemble convexe \(P\) est un sous-ensemble \(S\) de
-\(P\) tel que
-\[S=\{s\in P:\forall (p_1,p_2,\alpha)\in P^2\times[0,1],(\alpha p_1+(1-\alpha)p_2)\neq s\}\]
-C'est à dire tous les points qui ne se situent pas sur une droite reliant deux
-autres points de l'ensemble \(P\), quels que soient ces derniers points.
+Les \emph{sommets} d'un ensemble convexe \(P\) est le sous-ensemble \(S\) de
+\(P\) de tous les éléments ne pouvant pas être exprimés comme une combinaison
+linéaire convexe d'autres éléments:
+\[S=\{s\in P:\forall (p_1,p_2,\alpha)\in (P\setminus\{s\})^2\times[0,1],(\alpha
+p_1+(1-\alpha)p_2)\neq s\}\] C'est à dire tous les points qui ne se situent pas
+sur une droite reliant deux autres points de l'ensemble \(P\), quels que soient
+ces derniers points.
 \end{definition}
 
+\begin{corollary}
+Tout élément \(p\) d'un ensemble convexe \(P\) peut être formulé comme une
+combinaison linéaire convexe de ses sommets.
+\begin{proof}
+\(p\) est soit un sommet, soit \(p\) n'est pas un sommet:
+\begin{itemize}
+	\item Si il est un sommet, alors il est effectivement la combinaison
+	linéaire convexe trivialle \(p\).
+	\item Sinon, par la définition des sommets, il peut être exprimé par
+	une combinaison linéaire convexe d'autres points de \(P\), par exemple ses
+	sommets.
+\end{itemize}
+\end{proof}
+\end{corollary}
+
 \subsection{Résultats fondamentaux}
+\begin{notation}
+On notera le problème
+\[\begin{cases}
+\text{Min } cx \\
+Ax \begin{Bmatrix}\le\\=\end{Bmatrix}b \\
+x \ge 0
+\end{cases}\]
+comme suit:
+\[\text{Min }\{cx:Ax\begin{Bmatrix}\le\\=\end{Bmatrix}b,x\ge0\}\]
+\end{notation}
 \begin{result}
-L'ensemble des solutions admissibles d'un problème linéaire est convexe.
+L'ensemble \(P = \{cx:Ax\le b,x\ge 0\}\) est convexe.
+\begin{proof}
+\end{proof}
 \end{result}
 
 \begin{result}
@@ -240,8 +276,7 @@ L'ensemble des solutions admissibles d'un problème linéaire est
 \begin{itemize}
 	\item Soit vide;
 	\item Soit un polyèdre convexe;
-	\item Soit un ensemble polyédrique;
-	\item Soit convexe non-borné.
+	\item Soit un ensemble polyédrique non-borné.
 \end{itemize}
 \end{result}
 
@@ -254,14 +289,30 @@ x\in P
 \end{cases}\]
 contient au moins un sommet de \(P\).
 \begin{proof}
-Soient \(S_1,\dots,S_k\) les sommets de \(P\) et \(cS_m=\min_icS_i\).\\
+Soient \(s_1,\dots,s_k\) les sommets de \(P\) et \(cs_m=\min_ics_i\).\\
 Puisque \(P\) est convexe, chacun de ses points peut être exprimé comme une
 combinaison de ses sommets. Pour toute solution \(x\) du problème, on a
-\[x\in P\Rightarrow \exists \alpha\in[0,1]^k:x=\sum_i \alpha_iS_i\text{ (et}\sum_i\alpha_i=1\text{)}\]
-En multipliant par \(c\), on a
-\[cx=\sum_ic\alpha_iS_i\ge cS_m\]
-Donc, le sommet \(S_m\) ayant la plus petite évaluation parmis les autres
+\[x\in P\Rightarrow \exists \alpha\in[0,1]^k:x=\sum_i \alpha_is_i\text{
+(et}\sum_i\alpha_i=1\text{)}\] En multipliant par \(c\), on a
+\[cx=\sum_ic\alpha_is_i\ge cs_m\]
+Donc, le sommet \(s_m\) ayant la plus petite évaluation parmis les autres
 sommets est une des solution optimale.
+\end{proof}
+\end{result}
+
+\begin{notation}
+\(P_j\) est la \(j\)\ieme \(\,\) colonne de la matrice \(A\).
+On notera également \(P_0=b\).
+\end{notation}
+
+\begin{result}
+Si \(A\) est de rang \(m\), alors tout sommet de l'ensemble des solutions
+admissibles est une solution de base admissible.
+\begin{proof}
+Soit \(s=(s_1,\dots,s_k,0\dots,0)\) une solution admissible, avec
+\(s_i\ge0\;\forall i\in[1,k]\)\\
+Si \(P_1,\dots,P_k\) ne sont pas linéairement indépendants, alors
+\[\exists \alpha\in\mathbb{R}^k:\sum_{j=1}^k\alpha_jP_j=0\]
 \end{proof}
 \end{result}
 
@@ -280,125 +331,4 @@ On peut prouver que la solution se trouve sur un des sommets du polygone (ce
 sera fait plus tard). L'algorithme du simplex démarre sur l'un de ces sommets et
 passe de sommet en sommet vers la solution optimale, toujours en améliorant la
 solution courante.
-
-\section{Notes}
-Le problème dual de
-\[Max\;cx\]
-\[Ax\le b\]
-\[x\in\mathbb{R}^+\]
-est
-\[Min\;yb\]
-\[yA\ge c\]
-Les deux on les même solutions, le premier est un problème d'optimisation de
-vente, le deuxième optimise la production.
-\paragraph{}
-Pour passer du primal au dual:
-\[Min\;cx\Rightarrow Max\;(-c)x\Rightarrow Min\;y(-b)\Rightarrow Max\;yb\]
-\[Ax\ge b\Rightarrow -Ax\le -b\Rightarrow y(-A)\ge -c\Rightarrow yA\le c\]
-Slides p. 48: s.r.s veut dire "sans restriction de signe".
-\paragraph{Démonstration de la dualité des problèmes:}
-On a
-\[Max\;cx; ax\le b\]
-dual de
-\[Min\;yb;yA\ge c\]
-On travaille sur
-\[Min\;cx; Ax=b\Leftrightarrow Min\;cx; Ax\le b;Ax\ge b\]
-\[\Leftrightarrow Max\;-cx; Ax\le b;-Ax\le b\Leftrightarrow Max\;-cx; \tilde
-Ax\le \tilde b\] Avec \(\tilde A_{2m\times m}\) la superposition de \(A\) et
-\(-A\), et pareil pour b.
-\[\Leftrightarrow Min\;y\tilde b;y\tilde A\ge -c\]
-\[y\begin{matrix}A\\-A\end{matrix}\ge -c\]
-\[a_{11}y_{1}+a_{21}y_2+\dots+a_{m1}y_m-a_{11}y_{m+1}-a_{21}y_2-a_{31}y_3-\dots-a_{m2}y_m\]
-Si on rassemble certains termes, on trouve qu'il n'y a pas de restriction de
-signe sur \(y\).
-\[\Leftrightarrow Min\;yb;yA\ge -b\]
-Prenons une solution admissible \(x\) de \(Ax=b\).
-Multiplions par y
-\[yb=yAx\]
-\[\Leftrightarrow yb=yAx\le cx\]
-\[\Leftrightarrow yb\le cx\]
-Le problème primal minimise, et le dual maximise, or la solution du dual est
-plus petite ou égale à celle du dual.\\
-On a un \emph{duality gap} entre les deux solutions, et on peut en déduire que
-si ce gap est nul, on a la solution optimale.
-\paragraph{Autre démonstration:}
-On a
-\[Max\;cx; Ax\le b\]
-dual de
-\[Min\;yb;yA\ge c\]
-
-On réécrit
-\[Max\;cx; Ax+s\le b\]
-dual de
-\[Min\;yb;yA-t\ge c\]
-pour deux solutions \(\tilde x, \tilde t, \tilde y, \tilde s\).
-On va prouver que si on a
-\[\tilde x\cdot\tilde t=0\]
-\[\tilde y\cdot\tilde y=0\]
-alors ces solutions sont optimales.
-Pour cela, commencons par:
-\[c\tilde x=(\tilde yA-t)\tilde x=\tilde yA\tilde x-\tilde t\tilde x\]
-\[=\tilde yA\tilde x=\tilde y(b-\tilde s)=\tilde yb-\tilde y\tilde s\]
-\[=\tilde yb=c\tilde x\;_{\square}\]
-
-\section{Exemples de problèmes de programmation mathématique}
-\paragraph{Le problème du sac à dos} Supposons que, dans l'optique d'une
-randonnée en montagne, l'on cherche à remplir au mieux un sac à dos avec des
-aliments ayant chacun un poids et une valeur énergétique, en sachant que l'on ne
-peut pas porter plus de 16 unités de poids:
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
- & A & B & C \\
-\hline
-Énergie & 5 & 4 & 1 \\
-\hline
-Poids & 4 & 2 & 1 \\
-\hline
-\end{tabular}
-\\
-\end{center}
-On va représenter le problème comme suit:
-\[f(x_A, x_B, x_C) =5x_A + 4x_B + x_C\]
-\[4x_A + 2x_B + x_C \le 16\]
-où \(x_A,x_B,x_C\) sont le nombre de fois que l'on mettra un objet A, B ou C
-respectivement dans le sac.\\
-On cherche donc à maximiser \(f\), car il faut maximiser la valeur nutritionelle
-totale des aliments dans le sac.\\
-C'est un problème de programmation linéaire.
-\paragraph{Le problème du voyageur de commerce} Problème bien connu, passons
-directement à la modélisation en programmation mathématique:\\
-Soit \(n\) villes, posons \(x_{ij} = 1\) si le voyageur va de la ville \(i\) à
-la ville \(j\), \(x_{ij} = 0\) sinon.\\
-Le cout du trajet entre chaque ville est décrit par la matrice
-\([c_{ij}]_{i,j\in[n]^2}\)
-Nous cherchons à minimiser la fonction de coût
-\[z=\sum_i\sum_j x_{ij}c_{ij}\]
-Les contraintes sont les suivantes:
-\begin{itemize}
-	\item Il faut que chaque ville soit visitée une seule fois:
-		\[\sum_i x_{ij} = 1\]
-	\item Il faut aussi que le voyageur parte aussi de chaque ville:
-		\[\sum_j x_{ij} = 1\]
-	\item Mais il faut également que le graphe ainsi formé soit connexe ! Pour
-		toute partition de l'ensemble \(V\) des villes en deux sous-ensembles
-		\(S\) et \(\bar S\) tels que \(S\cup\bar S=V\) et
-		\(S\cap\bar S=\emptyset\), il faut qu'il existe un cheMin\;reliant \(S\)
-		et \(\bar S\):
-		\[\sum_{s\in S}\sum_{\bar s\in\bar S}x_{s\bar s}\ge 1\]
-		pour \(x_{s\bar s}=x_{ij}\) si \(s\) et \(\bar s\) correspondent aux
-		villes \(i\) et \(j\) respectivement.\\
-\end{itemize}
-\emph{Difficulté :} L'énumération de toutes les possibilités de cette dernière
-contrainte prends beaucoup, beaucoup de temps. C'est ce qui explique la nature
-difficile de ce problème, et qui le rends impossible à résoudre en temps
-polynomial.
-
-\paragraph{}On pourrait être tenté de résoudre le problème en énumérant toutes
-les solutions possibles, et en prenant la meilleure. On peut trouver facilement
-que le nombre de solutions possibles est \(n!\). Pour \(n=52\) (le problème
-tel que posé pour visiter tous les états des États-Unis), on a à une vache près
-\(10^{69}\) solutions. Leur énumération est simplement impossible, même avec le
-plus puissant des ordinateur connus.
-
 \end{document}
