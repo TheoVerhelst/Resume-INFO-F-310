@@ -293,7 +293,7 @@ Pour toute combinaison linéaire convexe de facteurs \((\alpha, 1-\alpha)\)
 d' éléments \(x_1,x_2 \in P\), on a
 \[A(\alpha x_1+(1-\alpha)x_2) = A\alpha x_1 + A(1-\alpha)x_2
 \le \alpha b + (1-\alpha) b = b\]
-\[\Rightarrow A\alpha x_1 + A(1-\alpha)x_2 \le b\]
+\[\Rightarrow A(\alpha x_1+(1-\alpha)x_2) \le b\]
 Pour la second contrainte, on a
 \[\alpha x_1+(1-\alpha)x_2\ge 0\]
 Car c'est un combinaison linéaire convexe d'éléments positifs.\\
@@ -426,8 +426,8 @@ par un polygone.
 \begin{center}\textbf{\textbf{}}
 \includegraphics[width=\textwidth]{simplex-xy.png}
 \end{center}
-On peut prouver que la solution se trouve sur un des sommets du polygone (ce
-sera fait plus tard). L'algorithme du simplex démarre sur l'un de ces sommets et
+On a prouvé précédemment qu'une des solutions optimales se trouve sur l'un des
+sommets du polygone. L'algorithme du simplex démarre sur l'un des sommets et
 passe de sommet en sommet vers la solution optimale, toujours en améliorant la
 solution courante.
 \end{document}
