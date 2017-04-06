@@ -150,10 +150,10 @@ car on peut toujours se ramener à ce problème plus restreint:
 	\[a\ge b\Leftrightarrow -a\le-b\]
 
 	\item On ne considère que les  problèmes où les variables
-	\((x_1,\dots,x_n)\) sont non-strictement positives, car ces variables
+	\((x_1,\dots,x_n)\) sont positives, car ces variables
 	représentent souvent des quantités, et ne peuvent donc pas être négatives.
 	Si toutefois une variable \(x_i,\,i\in[1,n]\) peut être négative, on se
-	ramène dans le cas non-strictement positif en posant
+	ramène dans le cas positif en posant
 	\[x_i=y_i-z_i\]
 	où \(y_i,z_i\) sont deux nouvelles variables dans \(\mathbb{R}^+\).
 
@@ -170,7 +170,7 @@ Ax \le b \\
 x \ge 0
 \end{cases}\]
 Afin de pouvoir résoudre le problème avec les outils de l'algèbre linéaire, on
-introduit \(m\) nouvelles variables non-strictement positives
+introduit \(m\) nouvelles variables positives
 \([t_1,\dots,t_m]=t\), et on reformule les contraintes comme suit:
 \[Ax+t=b\]
 Les variables \(t_j\) sont appelées variables d'écart, et représentent la
@@ -183,6 +183,17 @@ et considererons généralement les problèmes de la forme
 Ax = b \\
 x \ge 0
 \end{cases}\]
+
+\begin{notation}
+On notera le problème
+\[\begin{cases}
+\text{Min } cx \\
+Ax \begin{Bmatrix}\le\\=\end{Bmatrix}b \\
+x \ge 0
+\end{cases}\]
+comme suit:
+\[\text{Min }\{cx:Ax\begin{Bmatrix}\le\\=\end{Bmatrix}b,x\ge0\}\]
+\end{notation}
 
 \subsection{Définitions}
 \begin{definition}
@@ -255,19 +266,20 @@ combinaison linéaire convexe de ses sommets.
 \end{corollary}
 
 \subsection{Résultats fondamentaux}
-\begin{notation}
-On notera le problème
-\[\begin{cases}
-\text{Min } cx \\
-Ax \begin{Bmatrix}\le\\=\end{Bmatrix}b \\
-x \ge 0
-\end{cases}\]
-comme suit:
-\[\text{Min }\{cx:Ax\begin{Bmatrix}\le\\=\end{Bmatrix}b,x\ge0\}\]
-\end{notation}
 \begin{result}
-L'ensemble \(P = \{cx:Ax\le b,x\ge 0\}\) est convexe.
+L'ensemble \(P = \{x:Ax\le b,x\ge 0\}\) est convexe.
 \begin{proof}
+Pour toute combinaison linéaire convexe de facteurs \((\alpha, 1-\alpha)\)
+d' éléments \(x_1,x_2 \in P\), on a
+\[A(\alpha x_1+(1-\alpha)x_2) = A\alpha x_1 + A(1-\alpha)x_2
+\le \alpha b + (1-\alpha) b = b\]
+\[\Rightarrow A\alpha x_1 + A(1-\alpha)x_2 \le b\]
+Pour la second contrainte, on a
+\[\alpha x_1+(1-\alpha)x_2\ge 0\]
+Car c'est un combinaison linéaire convexe d'éléments positifs.\\
+On en conclut que toute combinaison linéaire convexe d'éléments de \(P\) a
+répond également aux contraintes définissant l'ensemble \(P\).
+
 \end{proof}
 \end{result}
 
