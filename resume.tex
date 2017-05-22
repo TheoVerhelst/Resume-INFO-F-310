@@ -48,14 +48,14 @@ par un tuple \((z, G)\), où
 \[z:E^n\to E\]
 est appelée \emph{fonction économique} (ou encore \emph{fonction de coût}), et
 où \[\star\in\{=,\ge,\le\},\;G=\{(g_j(x_1,\dots,x_n)\star b_j)\;\forall
-j\in[1,m]\}\] sont appelées \emph{contraintes}.
+j\in\{1,\dots,m\}\}\] sont appelées \emph{contraintes}.
 \((x_1,\dots,x_n)\) sont les \emph{variables} du problème.
 \end{definition}
 
 \begin{notation}
 On notera
 \[g_j(x_1,\dots,x_n)\begin{Bmatrix}\le\\\ge\\=\end{Bmatrix}b_j\quad\forall
-j\in[1,m]\]
+j\in\{1,\dots,m\}\]
 \end{notation}
 
 \begin{definition}
@@ -137,23 +137,24 @@ forme matricielle:
 	\\
 	Ax \le b        & A\in\mathbb{R}^{m\times n},\, b\in\mathbb{R}^{m\times 1}
 	\\
-	x \ge 0
+	x_i \ge 0       & \forall i\in\{1,\dots,n\}
 \end{cases}\]
-où \(x\) est le vecteur de variables, \(c\) est le vecteur de coefficients de
+où \(x=[x_1,\dots,x_n]^T\) est le vecteur de variables, \(c\) est le vecteur de coefficients de
 la fonction économique \(z\), \(A\) est la matrices de coefficients des
-contraintes, et \(b\) est le vecteur de termes indépendants des contraintes.
+contraintes, et \(b=[b_1,\dots,b_m]^T\) est le vecteur de termes indépendants des contraintes.
 Un certain nombre de restrictions sont imposées sur la formulation du problème,
 car on peut toujours se ramener à ce problème plus restreint:
 \begin{itemize}
 	\item On se passe des contraintes en \(\ge\) et \(=\), car on peut
 	toujours reformuler ces contraintes avec d'autres contraintes en \(\le\):
-	\[a=b\Leftrightarrow a\le b\land -a\le-b\]
-	\[a\ge b\Leftrightarrow -a\le-b\]
+	\[\alpha=\beta\Leftrightarrow \alpha\le\beta\land-\alpha\le-\beta\]
+	\[\alpha\ge\beta\Leftrightarrow-\alpha\le-\beta\]
+	\[\forall\alpha,\beta\in\mathbb{R}\]
 
 	\item On ne considère que les  problèmes où les variables
 	\((x_1,\dots,x_n)\) sont positives, car ces variables
 	représentent souvent des quantités, et ne peuvent donc pas être négatives.
-	Si toutefois une variable \(x_i,\,i\in[1,n]\) peut être négative, on se
+	Si toutefois une variable \(x_i,\,i\in\{1,\dots,n\}\) peut être négative, on se
 	ramène dans le cas positif en posant
 	\[x_i=y_i-z_i\]
 	où \(y_i,z_i\) sont deux nouvelles variables dans \(\mathbb{R}^+\).
@@ -245,7 +246,7 @@ seulement si la base associée \(B\) est la matrice unité \(m\times m\).
 \begin{definition}
 Une \emph{combinaison linéaire convexe} d'éléments \(p_1,\dots,p_n\) est
 une expression de la forme \[\sum_{i=1}^n\alpha_ip_i\] où \(\alpha_i\in[0,1]
-\;\forall i\in[1,n]\) et où \(\sum_{i=1}^n\alpha_i=1\). \\
+\;\forall i\in\{1,\dots,n\}\) et où \(\sum_{i=1}^n\alpha_i=1\). \\
 Par exemple, pour deux points \(p_1\) et \(p_2\), cette expression représente le
 segment de droite reliant \(p_1\) et \(p_2\).
 \end{definition}
@@ -351,7 +352,7 @@ On peut alors exprimer les contraintes d'un problème linéaire comme suit:
 \(P\) est une solution de base admissible.
 \begin{proof}
 Soit \(s=(s_1,\dots,s_k,0\dots,0)\) un sommet de \(P\) (c'est donc une solution
-admissible), avec \(s_i\ge0\;\forall i\in[1,k]\). On peut toujours s'y ramener
+admissible), avec \(s_i\ge0\;\forall i\in\{1,\dots,k\}\). On peut toujours s'y ramener
 en réordonnant les variables, de manière à avoir les zéros à la fin.\\
 Montrons que \(P_1,\dots,P_k\) sont linéairement indépendants par l'absurde:\\
 Par la notation précédente, on a
@@ -360,7 +361,7 @@ Si \(P_1,\dots,P_k\) ne sont pas linéairement indépendants, on a également
 \[\exists (\alpha_1,\dots,\alpha_k)\in\mathbb{R}^k:\sum_{j=1}^k\alpha_jP_j=0\]
 avec \(\alpha_1,\dots,\alpha_k\) non tous nuls.\\
 En choisissant un nombre \(\epsilon\in\mathbb{R}\) tel que \(|\epsilon
-\alpha_j|< s_j \;\forall j\in[1,k]\), on peut écrire:
+\alpha_j|< s_j \;\forall j\in\{1,\dots,k\}\), on peut écrire:
 \[\begin{dcases}
 	\sum_{j=1}^k(s_j+\epsilon\alpha_j)P_j=P_0 \\
 	\sum_{j=1}^k(s_j-\epsilon\alpha_j)P_j=P_0
@@ -369,7 +370,7 @@ On en déduit qu'il existe deux solutions admissibles
 \[x^{(1)} = (s_1+\epsilon\alpha_1,\dots,s_k+\epsilon\alpha_k)\]
 \[x^{(2)} = (s_1+\epsilon\alpha_1,\dots,s_k-\epsilon\alpha_k)\]
 \begin{note}
-On a imposé la condition \(|\epsilon \alpha_j|< s_j \;\forall j\in[1,k]\) afin
+On a imposé la condition \(|\epsilon \alpha_j|< s_j \;\forall j\in\{1,\dots,k\}\) afin
 de garantir que \(x^{(1)}\ge0\) et \(x^{(2)}\ge0\).
 \end{note}
 On a donc
