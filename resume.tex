@@ -404,7 +404,7 @@ Soit \(s=(s_1,\dots,s_m,0,\dots,0)\) une solution de base admissible. Cela
 signifie que la matrice \(B=(P_1\dots P_m)\) est une base. Prouvons que \(s\)
 est un sommet:
 \paragraph{}
-Si \(s_i=0\;\forall i\in[1,m]\), alors \(s\) ne peut pas être exprimé comme une
+Si \(s_i=0\;\forall i\in\{1,\dots,m\}\), alors \(s\) ne peut pas être exprimé comme une
 combinaison linéaire convexe de deux autres éléments de \(P\), et donc \(s\) est
 un sommet.
 \paragraph{}
@@ -412,7 +412,7 @@ Sinon, prouvons par l'absurde que \(s\) est aussi un sommet. Si \(s\) n'est pas
 un sommet, alors
 \[\exists (x^{(1)},x^{(2)},\alpha)\in P^2\times[0,1]:s=\alpha x^{(1)}+(1-\alpha)x^{(2)}\]
 Et comme \(x^{(1)}\ge0\) et \(x^{(2)}\ge0\), on peut en déduire que
-\[x^{(1)}_i=x^{(2)}_i=0\;\forall i\in[m+1,n]\]
+\[x^{(1)}_i=x^{(2)}_i=0\;\forall i\in\{m+1,\dots,n\}\]
 On peut alors écrire
 \[Bx^{(1)}=Bx^{(2)}=b\]
 Et puisque \(B\) est carrée et inversible, on a \(x^{(1)}=x^{(2)}=s\).
