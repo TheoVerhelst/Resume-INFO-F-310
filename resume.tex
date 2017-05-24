@@ -435,4 +435,109 @@ On a prouvé précédemment qu'une des solutions optimales se trouve sur l'un de
 sommets du polygone. L'algorithme du simplex démarre sur l'un des sommets et
 passe de sommet en sommet vers la solution optimale, toujours en améliorant la
 solution courante.
+
+\subsection{Application}
+
+De manière numérique, on a démontré qu'un sommet correspond à une valuation de $x$ répondant à $Ax = b$ telle que :
+\[\begin{dcases}
+	x_i = b_i\forall i \in I(B) \\
+	x_i = 0 \forall i \in J(B)
+\end{dcases}\]
+
+où $B$ est une base de A (matrice identité extraite de A), $I(B)$ (resp. $J(B)$) sont les indices des colonnes de $A$ inclus (resp. exclus) dans $B$. Passer à un sommet adjacent revient à effectuer un \textbf{changement de base} en y ajoutant un indice exclus $k$ et en retirant un indice inclus $r$, de manière à obtenir :
+\[\begin{dcases}
+	x_i = b'_i\forall i \in I(B') = \{ I(B) \cup \{k\} \} \setminus \{r\} \\
+	x_i = 0 \forall i \in J(B') = \{ J(B) \cup \{r\} \} \setminus \{k\}
+\end{dcases}\]
+Ce nouveau sommet correspond à une valuation de $x$ répondant à $A'x = b'$.
+
+Ces deux couples d'équations peuvent s'écrire comme suit :
+\begin{equation}
+\label{eq:base-general}
+x_i + \sum_{j \in J(B)}{a_{ij}x_j} = b_i , i \in I(B)
+\end{equation}
+\begin{equation}
+\label{eq:base'-general}
+x_i + \sum_{j \in J(B')}{a'_{ij}x_j} = b'_i , i \in I(B')
+\end{equation}
+
+\begin{theorem}
+Appliquer un changement de base revient à effectuer les transformations suivantes
+\[a'_{ij} = a_{ij} - a_{rj} \frac{a_{ik}}{a_{rk}}, \forall i \in I(B) \cap I(B') \qquad a'_{kj} = \frac{a_{rj}}{a_{rk}}\]
+\[b'_i = b_i - b_r \frac{a_{ik}}{a_{rk}}, \forall i \in I(B) \cap I(B') \qquad b'_{k} = \frac{b_r}{a_{rk}}\]
+\end{theorem}
+
+\begin{proof}
+Soient $k \in J(B)$ et $r \in I(B)$. Nous cherchons à retirer $k$ de $J(B)$ :
+\[ x_r + \sum_{j \in J(B)}{a_{rj}x_j} = b_r \Rightarrow x_r + \sum_{j \in J(B) \setminus \{k\}}{a_{rj}x_j} + a_{rk}x_k = b_r \]
+Nous pouvons ainsi isoler $x_k$ :
+\begin{equation}
+\label{eq:xk-isole}
+x_k = \frac{b_r}{a_{rk}} - \frac{x_r}{a_{rk}} - \sum_{j \in J(B) \setminus \{k\}}{\frac{a_{rj}}{a_{rk}} x_j}
+\end{equation}
+
+Nous pouvons réécrire l'expression \ref{eq:base-general} de façons différentes pour des valeurs distinctes de $i$ :
+\[\begin{dcases}
+	x_i + a_{ik}x_k + \sum_{j \in J(B) \setminus \{k\}}{a_{ij}x_j} = b_i , i \in I(B) \setminus \{r\} \\
+	x_k + \frac{x_r}{a_{rk}} + \sum_{j \in J(B) \setminus \{k\}}{\frac{a_{rj}}{a_{rk}}} x_j = \frac{b_r}{a_{rk}}
+\end{dcases}\]
+
+Et, simplement en réinsérant la définition de $x_k$ de l'équation \ref{eq:xk-isole} dans la première égalité nous trouvons :
+\[\begin{dcases}
+	x_i - \frac{a_{ik}}{a_{rk}}x_r + \sum_{j \in J(B) \setminus \{k\}}{ \left[ a_{ij} - \frac{a_{ik}a_{rj}}{a_{rk}} \right] x_j} = b_i - \frac{a_{ik}b_r}{a_{rk}} , i \in I(B) \setminus \{r\} \\
+	x_k + \frac{x_r}{a_{rk}} + \sum_{j \in J(B) \setminus \{k\}}{\frac{a_{rj}}{a_{rk}}} x_j = \frac{b_r}{a_{rk}}
+\end{dcases}\]
+
+Similairement, en réécrivant l'expression \ref{eq:base'-general} en séparant la valeur $k$ des autres, nous obtenons :
+\[\begin{dcases}
+	x_i + a'_{ir}x_r + \sum_{j \in J(B') \setminus \{r\}}{a'_{ij}x_j} = b'_i , i \in I(B') \setminus \{k\} \\
+	x_k + a'_{kr}x_r + \sum_{j \in J(B') \setminus \{r\}}{a'_{kj} x_j} = b'_k
+\end{dcases}\]
+
+La symétrie des deux dernières paires d'égalités, ainsi que l'égalité des ensembles
+\[I(B) \cap I(B') = I(B) \setminus \{r\} = I(B') \setminus \{k\} , \quad J(B) \setminus \{k\} = J(B') \setminus \{r\}\]
+nous amènent aux coefficients du théorème.
+\end{proof}
+
+\subsection{Fonction économique}
+
+Avant le changement de base, nous avons comme fonction économique :
+\[ z_0 = \sum_{i \in I(B)}{c_i b_i} \]
+
+Après le changement de base, celle-ci devient d'après le théorème :
+\begin{equation*}\begin{split}
+z'_0 & = \sum_{i \in I(B')}{c_i b'_i} = \sum_{i \in I(B) \cap I(B')}{c_i b'_i} + c_k b'_k = \sum_{i \in I(B) \cap I(B')}{c_i \left( b_i - b_r \frac{a_{ik}}{a_{rk}} \right)} + c_k \frac{b_r}{a_{rk}} \\
+& = \sum_{i \in I(B)}{c_i \left( b_i - b_r \frac{a_{ik}}{a_{rk}} \right)} + c_k \frac{b_r}{a_{rk}} = \sum_{i \in I(B)}{c_i b_i} - \frac{b_r}{a_{rk}} \left[ \sum_{i \in I(B)}{c_i a_{ik} - c_k} \right] \\
+& = z_0 - \frac{b_r}{a_{rk}} (z_k - c_k)
+\end{split}\end{equation*}
+
+Pour effectuer un changement de base, le choix de $k$ et $r$ doit vérifier :
+\[\begin{dcases}
+	z_k - c_k > 0 \quad \text{dans un problème à minimum} \\
+    z_k - c_k < 0 \quad \text{dans un problème à maximum} \\
+    a_{rk} > 0 \quad \text{(pivot)} \\
+    b_i - b_r \frac{a_{ik}}{a_{rk}} \geq 0, \forall i \in I(B) \cap I(B')
+\end{dcases}\]
+
+Tant qu'il existe un pivot $a_{rk}$ positif, la règle suivante peut être utilisée pour déterminer $k$ et $r$ :
+\[\begin{dcases}
+	z_k - c_k = \max_{j}{z_j - c_j} \quad \text{dans un problème à minimum} \\
+    z_k - c_k = \min_{j}{z_j - c_j} \quad \text{dans un problème à maximum} \\
+    \frac{b_r}{a_{rk}} = \min_{a_{ik}>0}{\frac{b_i}{a_{ik}}}
+\end{dcases}\]
+
+\subsection{Critère d'optimalité}
+Soit $Q$ une valuation de $x$ (un point quelconque admissible), ce que nous noterons $x_i = x_i(Q) \forall i$. Nous pouvons calculer la fonction économique en ce point :
+\[Z_0(Q) = \sum_{i \in I(B)}{c_i x_i(Q)} + \sum_{i \in J(B)}{c_j x_j(Q)} \]
+En insérant l'équation \ref{eq:base-general}, nous pouvons réduire $Z_0(Q)$ :
+\begin{equation}\begin{split}
+Z_0(Q) & = \sum_{i \in I(B)}{c_i \left[ b_i - \sum_{j \in J(B)}{a_{ij}x_j(Q)} \right]} + \sum_{j \in J(B)}{c_j x_j(Q)} \\
+& = \sum_{i \in I(B)}{c_i b_i - \sum_{j \in J(B)}{\left[ \sum_{i \in I(B)}{c_i a_{ij} - c_j} \right]} x_j(Q)} \\
+& = Z_0 - \sum_{j \in J(B)}{(z_j - c_j)x_j(Q)}
+\end{split}\end{equation}
+
+Nous pouvons donc affirmer que $Z_0$ est optimal si :
+\[z_j - c_j \leq 0 \forall j \in J(B) \quad \text{(problème à min.)}\]
+\[z_j - c_j \geq 0 \forall j \in J(B) \quad \text{(problème à max.)}\]
+
 \end{document}
