@@ -130,14 +130,22 @@ Le problème résultant reste un problème de programmation linéaire si \(f\) e
 
 \section{Problèmes  de programmation linéaire continus}
 \subsection{Forme matricielle}
+\begin{notation}
+On définit la notation d'inégalité entre deux vecteurs et entre un vecteur et
+un scalaire par la conjonction des inégalités membre à membre, ou entre chaque
+membre et le scalaire.
+\begin{align*}
+	&\quad\forall a,b\in\mathbb{R}^n,\alpha\in\mathbb{R}\\
+	&a\le b\coloneqq a_i\le b_i\;\forall i\in\{1,\dots,n\}\\
+	&a\le \alpha\coloneqq a_i\le\alpha\;\forall i\in\{1,\dots,n\}
+\end{align*}
+\end{notation}
 On commencera par exprimer les problèmes de programmation linéaire continus sous
 forme matricielle:
 \[\begin{cases}
-	\text{Min\;} cx & c\in\mathbb{R}^{1\times n},\, x\in\mathbb{R}^{n\times 1}_+
-	\\
-	Ax \le b        & A\in\mathbb{R}^{m\times n},\, b\in\mathbb{R}^{m\times 1}
-	\\
-	x_i \ge 0       & \forall i\in\{1,\dots,n\}
+	\text{Min\;} cx & c\in\mathbb{R}^{1\times n},\, x\in[0,\infty[^{n\times 1}\\
+	Ax \le b        & A\in\mathbb{R}^{m\times n},\, b\in\mathbb{R}^{m\times 1}\\
+	x \ge 0
 \end{cases}\]
 où \(x=[x_1,\dots,x_n]^T\) est le vecteur de variables, \(c\) est le vecteur de coefficients de
 la fonction économique \(z\), \(A\) est la matrices de coefficients des
@@ -157,7 +165,7 @@ car on peut toujours se ramener à ce problème plus restreint:
 	Si toutefois une variable \(x_i,\,i\in\{1,\dots,n\}\) peut être négative, on se
 	ramène dans le cas positif en posant
 	\[x_i=y_i-z_i\]
-	où \(y_i,z_i\) sont deux nouvelles variables dans \(\mathbb{R}^+\).
+	où \(y_i,z_i\) sont deux nouvelles variables dans \([0,\infty[\).
 
 	\item On ne considère que la minimisation de la fonction
 	économique, car on peut ramener un problème de maximisation en un
@@ -540,4 +548,21 @@ Nous pouvons donc affirmer que $Z_0$ est optimal si :
 \[z_j - c_j \leq 0 \forall j \in J(B) \quad \text{(problème à min.)}\]
 \[z_j - c_j \geq 0 \forall j \in J(B) \quad \text{(problème à max.)}\]
 
+\section{Dualité}
+\begin{definition}
+Soit le problème linéaire en forme standard
+\[\begin{cases}
+\text{Max } z=cx \\
+Ax=b \\
+x \ge 0
+\end{cases}\]
+On l'appelera \emph{problème primal}, et le problème
+\[\begin{cases}
+\text{Min } w=b^Ty\\
+A^Ty\ge c^T
+\end{cases}\]
+sera appelé le \emph{problème dual}, avec \(y=[y_1,\dots,y_m]\in\mathbb{R}^m\)
+étant les nouvelles variables du dual. Notez que ces variables ne sont pas
+restreintes aux rééls non-négatifs.
+\end{definition}
 \end{document}
