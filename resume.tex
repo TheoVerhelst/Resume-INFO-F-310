@@ -598,19 +598,119 @@ Nous pouvons donc affirmer que $Z_0$ est optimal si :
 
 \section{Dualité}
 \begin{definition}
-Soit le problème linéaire en forme standard, qui est appelé \emph{problème primal}
+Soit le problème linéaire en forme canonique, qui est appelé \emph{problème primal}
 \[\begin{cases}
-\text{Max } z=cx \\
-Ax=b \\
+\text{Min } cx \\
+Ax\ge b \\
 x \ge 0
 \end{cases}\]
 On définit le \emph{problème dual} comme
 \[\begin{cases}
-\text{Min } w=b^Ty\\
-A^Ty\ge c^T
+\text{Max } yb\\
+yA\le c\\
+y\ge 0
 \end{cases}\]
-avec \(y=[y_1,\dots,y_m]\in\mathbb{R}^m\)
-étant les nouvelles variables du dual. Notez que ces variables ne sont pas
-restreintes aux rééls non-négatifs.
+avec \(y=[y_1,\dots,y_m]\in[0,\infty[^m\)
+étant les nouvelles variables du dual.
 \end{definition}
+\begin{corollary}
+On peut montrer que les dualités suivantes sont aussi vérifiées:
+\[\text{Primal:}
+\begin{cases}
+	\text{Max } cx \\
+	Ax\le b \\
+	x \ge 0
+\end{cases}
+\text{Dual:}\begin{cases}
+\text{Min } yb\\
+yA\ge c\\
+y\ge 0
+\end{cases}\]
+
+\[\text{Primal:}
+\begin{cases}
+	\text{Max } cx \\
+	Ax\ge b \\
+	x \ge 0
+\end{cases}
+\text{Dual:}\begin{cases}
+\text{Max } yb\\
+yA\ge -c\\
+y\ge 0
+\end{cases}\]
+
+\[\text{Primal:}
+\begin{cases}
+	\text{Min } cx \\
+	Ax\le b \\
+	x \ge 0
+\end{cases}
+\text{Dual:}\begin{cases}
+\text{Min } yb\\
+yA\ge -c\\
+y\ge 0
+\end{cases}\]
+Le problème dual du dual est le problème primal.
+
+\paragraph{}
+On peut également se servir des règles suivantes:
+\begin{itemize}
+	\item Si la \(j\)\ieme contrainte du primal est en \(\le\), alors la
+		\(j\)\ieme variable du dual est \(\ge 0\).
+	\item Si la \(j\)\ieme contrainte du primal est en \(=\), alors la
+		\(j\)\ieme variable du dual est sans restriction de signe (s.r.s).
+	\item Si la \(i\)\ieme variable du primal est en \(\ge 0\), alors la
+		\(i\)\ieme variable du dual est en \(\ge\).
+	\item Si la \(i\)\ieme variable du primal est s.r.s, alors la
+		\(i\)\ieme variable du dual est en \(=\).
+\end{itemize}
+\end{corollary}
+
+\subsection{Propriétés fondamentales de la dualité}
+Dans cette sous-section, nous considererons le couple primal-dual suivant:
+\[\text{Primal:}
+\begin{cases}
+	\text{Min } cx \\
+	Ax=b \\
+	x \ge 0
+\end{cases}
+\text{Dual:}\begin{cases}
+\text{Max } yb\\
+yA\le c\\
+y\text{s.r.s}
+\end{cases}\]
+
+\begin{theorem}
+Si \(x\) et \(y\) sont respectivement des solutions admissibles du primal et du
+dual (c.à.d si les contraintes et les domaines des variables sont respectés),
+alors l'évaluation de la fonction économique du primal et plus grande ou
+égale à l'évaluation de la fonction économique du dual (c.à.d \(cx\ge yb\)).
+\begin{proof}
+\[cx\ge (yA)x=y(Ax)=yb\]
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Si \(x\) et \(y\) sont respectivement des solutions admissibles du primal et du
+dual et si \(cx=yb\), alors \(x\) et \(y\) sont respectivement des solutions
+optimales du primal et du dual.
+\begin{proof}
+Soient \(X\) l'ensemble des solutions admissibles du primal, et \(Y\) l'ensemble
+des solutions admissibles du dual. Soient \(x^{(m)}\) la solution optimale du
+primal telle que
+\[cx^{(m)}=\min_{x\in X}cx\]
+et \(y^{(m)}\) la solution optimale du dual telle que
+\[y^{(m)}b=\max_{y\in Y}yb\]
+Soient deux solutions admissibles du primal et du dual respectivement \(x\) et
+\(y\), telles que \(cx=yb\). On a
+\[cx^{(m)}\le cx=yb\le y^{(m)}b\]
+Or, par le théorème précédent, on a aussi
+\[cx^{(m)}\ge y^{(m)}b\]
+Par conséquent,
+\[cx^{(m)}=cx=yb=y^{(m)}b\]
+Et donc
+\[x^{(m)}=x\land y^{(m)}=y\]
+\end{proof}
+\end{theorem}
+
 \end{document}
