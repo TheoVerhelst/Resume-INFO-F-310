@@ -248,6 +248,10 @@ Une base \(B\) possible serait la matrice
 Si et seulement si \(\det(B)\neq 0\). Les variables hors base sont alors
 \((x_{m+1},\dots,x_{n})\).
 \end{example}
+\begin{note}
+	Si une base \(B\) existe, alors \(A\) est de rang \(m\), par la définition
+	du rang.
+\end{note}
 \end{definition}
 
 \begin{definition}
@@ -263,7 +267,7 @@ variables, pour n'avoir alors que \(m\) variables à décider avec les \(m\)
 \end{definition}
 
 \begin{corollary}
-Le sous-vecteur \(x^{(B)}\) d'une solution de base \(x\) de base \(B\)contenant
+Le sous-vecteur \(x^{(B)}\) d'une solution de base \(x\) de base \(B\) contenant
 les variables en base est donné par \(x^{(B)}=B^{-1}b\).
 \begin{proof}
 Posons \(x^{(B)}=[x_1,\dots,x_m]\). On toujours réordonner les variables de
@@ -487,20 +491,43 @@ sommets du polygone. L'algorithme du simplex démarre sur l'un des sommets et
 passe de sommet en sommet vers la solution optimale, toujours en améliorant la
 solution courante.
 
-\subsection{Application}
+\subsection{Hypothèses}
+\begin{itemize}
+	\item Les contraintes sont de la forme \(Ax=b\);
+	\item \(A\) contient une matrice unité;
+	\item \(b\ge 0\);
+\end{itemize}
+La technique de la base artificielle permet de s'assurer de ces hypothèses
+dans un cadre général.
+
+\subsection{Changement de base}
 Nous avons démontré dans le théorème \ref{th:vertexIsBase} qu'un sommet de
 l'ensemble des solutions admissibles correspond à une valuation de $x$ répondant
 à $Ax = b$ telle que :
 \[\begin{dcases}
-	x_i = b_i\forall i \in I(B) \\
-	x_i = 0 \forall i \in J(B)
+	x_i = b_i\;&\forall i \in I(B) \\
+	x_i = 0&\forall i \in J(B)
 \end{dcases}\]
 
-où $B$ est une base de \(A\) (matrice extraite de \(A\) telle que \(\det(B)\neq
-0\)), $I(B)$ (resp. $J(B)$) sont les indices des colonnes de $A$ inclus (resp.
-exclus) dans $B$. Passer à un sommet adjacent revient à effectuer un
-\textbf{changement de base} en y ajoutant un indice exclus $k$ et en retirant un
-indice inclus $r$, de manière à obtenir :
+où $B$ est la matride unité extraite de \(A\), $I(B)$ (resp. $J(B)$) sont les
+indices des colonnes de $A$ inclus (resp. exclus) dans $B$. La valeur de la
+fonction économique est alors
+\[Z_0=\sum_{i\in I(B)}c_ib_i\]
+
+\begin{note}
+On considère que les variables ont été réordonnées de manière à ce que les
+indices en base aillent de \(1\) à \(m\). Sans quoi, l'expression \(x_i =
+b_i\forall i \in I(B)\) ne pourrait pas être définie pour \(i > m\). Une
+formulation plus exacte de la solution serait de définir un vecteur
+\(x^{\text(B)}\in\mathbb{R}^{m\times 1}\) tel que \(x^{\text(B)}_i=x_{i'}\), où
+\(i'\) serait le \(i\)\ieme élément de \(I(B)\). On aurait alors
+\(x^{\text(B)}_i=b_i\).
+\end{note}
+
+\paragraph{}
+Passer à un sommet adjacent revient à effectuer un \textbf{changement de base}
+en y ajoutant un indice exclus $k$ et en retirant un indice inclus $r$, de
+manière à obtenir :
 \[\begin{dcases}
 	x_i = b'_i\forall i \in I(B') = \{ I(B) \cup \{k\} \} \setminus \{r\} \\
 	x_i = 0 \forall i \in J(B') = \{ J(B) \cup \{r\} \} \setminus \{k\}
