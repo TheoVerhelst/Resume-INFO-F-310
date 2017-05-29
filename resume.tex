@@ -475,9 +475,9 @@ Donc \(s\) est un sommet.
 \end{proof}
 \end{theorem}
 
-\section{Algorithme du simplex}
+\section{Algorithme du Simplexe}
 \subsection{Intuition}
-L'algorithme du simplex résout des problèmes de programmation linéaire continus,
+L'algorithme du Simplexe résout des problèmes de programmation linéaire continus,
 et peut être facilement imaginé dans le cas d'un problème à deux variables
 continues \((x,y)\). Représentons dans le plan chacune des contraintes comme
 l'ensemble des points satisfaint cette contrainte. L'ensemble des solutions
@@ -487,7 +487,7 @@ par un polygone.
 \includegraphics[width=\textwidth]{simplex-xy.png}
 \end{center}
 On a prouvé précédemment qu'une des solutions optimales se trouve sur l'un des
-sommets du polygone. L'algorithme du simplex démarre sur l'un des sommets et
+sommets du polygone. L'algorithme du Simplexe démarre sur l'un des sommets et
 passe de sommet en sommet vers la solution optimale, toujours en améliorant la
 solution courante.
 
@@ -517,11 +517,7 @@ fonction économique est alors
 \begin{note}
 On considère que les variables ont été réordonnées de manière à ce que les
 indices en base aillent de \(1\) à \(m\). Sans quoi, l'expression \(x_i =
-b_i\forall i \in I(B)\) ne pourrait pas être définie pour \(i > m\). Une
-formulation plus exacte de la solution serait de définir un vecteur
-\(x^{\text(B)}\in\mathbb{R}^{m\times 1}\) tel que \(x^{\text(B)}_i=x_{i'}\), où
-\(i'\) serait le \(i\)\ieme élément de \(I(B)\). On aurait alors
-\(x^{\text(B)}_i=b_i\).
+b_i\forall i \in I(B)\) ne pourrait pas être définie pour \(i > m\).
 \end{note}
 
 \paragraph{}
@@ -529,11 +525,10 @@ Passer à un sommet adjacent revient à effectuer un \textbf{changement de base}
 en y ajoutant un indice exclus $k$ et en retirant un indice inclus $r$, de
 manière à obtenir :
 \[\begin{dcases}
-	x_i = b'_i\forall i \in I(B') = \{ I(B) \cup \{k\} \} \setminus \{r\} \\
-	x_i = 0 \forall i \in J(B') = \{ J(B) \cup \{r\} \} \setminus \{k\}
+	x_i = b'_i &\forall i \in I(B') = [I(B) \cup \{k\}] \setminus \{r\} \\
+	x_i = 0    &\forall i \in J(B') = [J(B) \cup \{r\}] \setminus \{k\}
 \end{dcases}\]
 Ce nouveau sommet correspond à une valuation de $x$ répondant à $A'x = b'$.
-
 Ces deux couples d'équations peuvent s'écrire comme suit :
 \begin{equation}
 \label{eq:base-general}
@@ -559,7 +554,7 @@ Nous pouvons ainsi isoler $x_k$ :
 x_k = \frac{b_r}{a_{rk}} - \frac{x_r}{a_{rk}} - \sum_{j \in J(B) \setminus \{k\}}{\frac{a_{rj}}{a_{rk}} x_j}
 \end{equation}
 
-Nous pouvons réécrire l'expression \ref{eq:base-general} de façons différentes pour des valeurs distinctes de $i$ :
+Nous pouvons réécrire l'expression \ref{eq:base-general} de façon différente pour des valeurs distinctes de $i$ :
 \[\begin{dcases}
 	x_i + a_{ik}x_k + \sum_{j \in J(B) \setminus \{k\}}{a_{ij}x_j} = b_i , i \in I(B) \setminus \{r\} \\
 	x_k + \frac{x_r}{a_{rk}} + \sum_{j \in J(B) \setminus \{k\}}{\frac{a_{rj}}{a_{rk}}} x_j = \frac{b_r}{a_{rk}}
@@ -594,7 +589,10 @@ z'_0 & = \sum_{i \in I(B')}{c_i b'_i} = \sum_{i \in I(B) \cap I(B')}{c_i b'_i} +
 & = z_0 - \frac{b_r}{a_{rk}} (z_k - c_k)
 \end{split}\end{equation*}
 
-Pour effectuer un changement de base, le choix de $k$ et $r$ doit vérifier :
+\subsection{Choix des indices de changement de base}
+Pour choisir les indices \(k\) et \(r\), il faut que la solution soit toujours
+admissible et qu'elle amène à une meilleur fonction économique. Plus
+formellement, le choix de $k$ et $r$ doit vérifier :
 \[\begin{dcases}
 	z_k - c_k > 0 \quad \text{dans un problème à minimum} \\
     z_k - c_k < 0 \quad \text{dans un problème à maximum} \\
@@ -609,19 +607,55 @@ Tant qu'il existe un pivot $a_{rk}$ positif, la règle suivante peut être utili
     \frac{b_r}{a_{rk}} = \min_{a_{ik}>0}{\frac{b_i}{a_{ik}}}
 \end{dcases}\]
 
+\begin{note}
+Dans la pratique, les quantités \(z_j - c_j\;\forall j\in J(B)\) correspondent
+aux coefficients de la fonction économique exprimée uniquement à partir des
+variables hors base. Il suffit donc de substituer au sein de la fonction
+économique les variables introduites dans la base par leur expression dans le
+systeme au fur et à mesure des changement de base. Ensuite, pour déterminer
+\(k\), il suffit de chercher le plus grand/petit coefficient dans la nouvelle
+expression de la fonction économique.
+\end{note}
+
 \subsection{Critère d'optimalité}
 Soit $Q$ une valuation de $x$ (un point quelconque admissible), ce que nous noterons $x_i = x_i(Q) \forall i$. Nous pouvons calculer la fonction économique en ce point :
-\[Z_0(Q) = \sum_{i \in I(B)}{c_i x_i(Q)} + \sum_{i \in J(B)}{c_j x_j(Q)} \]
-En insérant l'équation \ref{eq:base-general}, nous pouvons réduire $Z_0(Q)$ :
+\[z_0(Q) = \sum_{i \in I(B)}{c_i x_i(Q)} + \sum_{i \in J(B)}{c_j x_j(Q)} \]
+En insérant l'équation \ref{eq:base-general}, nous pouvons réduire $z_0(Q)$ :
 \begin{equation}\begin{split}
-Z_0(Q) & = \sum_{i \in I(B)}{c_i \left[ b_i - \sum_{j \in J(B)}{a_{ij}x_j(Q)} \right]} + \sum_{j \in J(B)}{c_j x_j(Q)} \\
+z_0(Q) & = \sum_{i \in I(B)}{c_i \left[ b_i - \sum_{j \in J(B)}{a_{ij}x_j(Q)} \right]} + \sum_{j \in J(B)}{c_j x_j(Q)} \\
 & = \sum_{i \in I(B)}{c_i b_i - \sum_{j \in J(B)}{\left[ \sum_{i \in I(B)}{c_i a_{ij} - c_j} \right]} x_j(Q)} \\
-& = Z_0 - \sum_{j \in J(B)}{(z_j - c_j)x_j(Q)}
+& = z_0 - \sum_{j \in J(B)}{(z_j - c_j)x_j(Q)}
 \end{split}\end{equation}
 
-Nous pouvons donc affirmer que $Z_0$ est optimal si :
+Nous pouvons donc affirmer que $z_0$ est optimal si :
 \[z_j - c_j \leq 0 \forall j \in J(B) \quad \text{(problème à min.)}\]
 \[z_j - c_j \geq 0 \forall j \in J(B) \quad \text{(problème à max.)}\]
+
+\subsection{Technique de la base artificielle}
+Bien qu'on puisse toujours exprimer les contraintes d'un système linéaire par
+des égalités, il n'est pas évident que la matrice de coefficients des
+contraintes contienne une matrice unité. Afin de palier à ce problème, on peut
+insérer \(m\) variables artificielles \(v=[v_1,\dots,v_m]\) dans le système, qui
+devient
+\[\begin{cases}
+	min \sum_{i=0}^{n}c_ix_i+\sum_{j=1}^{m}Mv_i
+	Ax+v=b\\
+	x\ge 0\\
+	v\ge 0
+\end{cases}\]
+pour un problème à minimum, ou
+\[\begin{cases}
+	max \sum_{i=0}^{n}c_ix_i-\sum_{j=1}^{m}Mv_i
+	Ax+v=b\\
+	x\ge 0\\
+	v\ge 0
+\end{cases}\]
+pour un problème à maximum, où \(M\) est une contrante arbitrairement grande. On
+peut alors utiliser les variables \(v_j\) comme base initialle. Si l'algorithme
+du Simplexe n'anulle pas les \(v_j\), c'est que les contraintes sont
+contradictoires. Si par contre il les annules, alors la solution optimale
+corresponds à la solution optimale du problème initial, mises à part les
+variables artificielles.
 
 \section{Dualité}
 \begin{definition}
