@@ -657,6 +657,29 @@ contradictoires. Si par contre il les annules, alors la solution optimale
 corresponds à la solution optimale du problème initial, mises à part les
 variables artificielles.
 
+\subsection{Convergence}
+Comme on cherche à annuler \(n-m\) variables du système, l'algorithme de devrait
+faire qu'au maximum \(C^n_{m-k}\) itérations. Toutefois, il peut arriver que
+deux choix soient possible pour l'indice \(k\), et que la solution ne s'améliore
+plus, mais que l'algorithme boucle entre les deux choix. Même si c'est très peu
+probable (ne serait-ce qu'à cause des erreurs de virgule flottante), on peut
+insérer une perturbation artificielle afin de converger dans ce cas également.
+
+\paragraph{}
+Considérons le système
+\[\begin{cases}
+	\text{Min }cx\\
+	Ax=b\\
+	x\ge 0
+\end{cases}\]
+Si l'algorithme boucle, on travaille alors sur le système
+\[\begin{cases}
+	\text{Min }cx\\
+	Ax=b'\quad b'i=b_i\epsilon^i\\
+	x\ge 0
+\end{cases}\]
+où \(\epsilon\) est une quantité positive arbitrairement proche de zéro.
+
 \section{Dualité}
 \begin{definition}
 Soit le problème linéaire en forme canonique, qui est appelé \emph{problème primal}
