@@ -410,22 +410,32 @@ On peut alors exprimer les contraintes d'un problème linéaire comme suit:
 Étant donné le problème linéaire \(\text{Min }\{cx:x\in P\}\) avec
 \(P = \{x:Ax=b,x\ge 0\}\), si \(A\) est de rang \(m\), alors tout sommet de
 \(P\) est une solution de base admissible.
+
 \begin{proof}
-Soit \(s=(s_1,\dots,s_k,0\dots,0)\) un sommet de \(P\) (c'est donc une solution
-admissible), avec \(s_i\ge0\;\forall i\in\{1,\dots,k\}\). On peut toujours s'y ramener
-en réordonnant les variables, de manière à avoir les zéros à la fin.\\
-Montrons que \(P_1,\dots,P_k\) sont linéairement indépendants par l'absurde:\\
-Par la notation précédente, on a
+Soit \(s=(s_1,\dots,s_k,0\dots,0)\) un sommet de \(P\) dont un certain nombre
+\(0\le (n-k) \le n\) de composantes sont nulles, avec et \(s_i>0\;\forall
+i\in\{1,\dots,k\}\). On peut toujours s'y ramener en réordonnant les variables,
+de manière à avoir les zéros à la fin.
+
+\paragraph{}
+Montrons que \(P_1,\dots,P_k\) sont linéairement indépendants par l'absurde. Par
+la notation précédente, on a
 \[\sum_{j=1}^ks_jP_j=P_0=b\]
 Si \(P_1,\dots,P_k\) ne sont pas linéairement indépendants, on a également
 \[\exists (\alpha_1,\dots,\alpha_k)\in\mathbb{R}^k:\sum_{j=1}^k\alpha_jP_j=0\]
-avec \(\alpha_1,\dots,\alpha_k\) non tous nuls.\\
-En choisissant un nombre \(\epsilon\in\mathbb{R}\) tel que \(|\epsilon
-\alpha_j|< s_j \;\forall j\in\{1,\dots,k\}\), on peut écrire:
-\[\begin{dcases}
-	\sum_{j=1}^k(s_j+\epsilon\alpha_j)P_j=P_0 \\
-	\sum_{j=1}^k(s_j-\epsilon\alpha_j)P_j=P_0
-\end{dcases}\]
+avec \(\alpha_1,\dots,\alpha_k\) non tous nuls. En choisissant un nombre
+\(\epsilon\in\mathbb{R}\) tel que \(|\epsilon \alpha_j|< s_j \;\forall
+j\in\{1,\dots,k\}\), on peut écrire:
+\begin{align}
+	&\begin{dcases}
+		\sum_{j=1}^ks_jP_j+\epsilon\sum_{j=1}^k\alpha_jP_j=P_0 \\
+		\sum_{j=1}^ks_jP_j-\epsilon\sum_{j=1}^k\alpha_jP_j=P_0 \\
+	\end{dcases}\\
+	\Rightarrow&\begin{dcases}
+		\sum_{j=1}^k(s_j+\epsilon\alpha_j)P_j=P_0 \\
+		\sum_{j=1}^k(s_j-\epsilon\alpha_j)P_j=P_0
+	\end{dcases}
+\end{align}
 On en déduit qu'il existe deux solutions admissibles
 \[x^{(1)} = (s_1+\epsilon\alpha_1,\dots,s_k+\epsilon\alpha_k)\]
 \[x^{(2)} = (s_1+\epsilon\alpha_1,\dots,s_k-\epsilon\alpha_k)\]
@@ -436,7 +446,9 @@ de garantir que \(x^{(1)}\ge0\) et \(x^{(2)}\ge0\).
 On a donc
 \[s=\frac{1}{2}(x^{(1)}+x^{(2)})\]
 Ce qui est contraire à l'hypothèse de \(s\) étant un sommet. On en conclut que
-\(P_1,\dots,P_k\) sont linéairement indépendants.\\
+\(P_1,\dots,P_k\) sont linéairement indépendants.
+
+\paragraph{}
 Puisque \(A\) est de rang \(m\), il existe au maximum \(m\) vecteurs colonnes
 extraits de \(A\) étant linéairement indépendants entre eux. Donc \(k\le m\).
 \begin{itemize}
@@ -460,9 +472,9 @@ Soit \(s=(s_1,\dots,s_m,0,\dots,0)\) une solution de base admissible. Cela
 signifie que la matrice \(B=(P_1\dots P_m)\) est une base. Prouvons que \(s\)
 est un sommet:
 \paragraph{}
-Si \(s_i=0\;\forall i\in\{1,\dots,m\}\), alors \(s\) ne peut pas être exprimé comme une
-combinaison linéaire convexe de deux autres éléments de \(P\), et donc \(s\) est
-un sommet.
+Si \(s_i=0\;\forall i\in\{1,\dots,m\}\), alors \(s\) ne peut pas être exprimé
+comme une combinaison linéaire convexe de deux autres éléments de \(P\), et donc
+\(s\) est un sommet.
 \paragraph{}
 Sinon, prouvons par l'absurde que \(s\) est aussi un sommet. Si \(s\) n'est pas
 un sommet, alors
