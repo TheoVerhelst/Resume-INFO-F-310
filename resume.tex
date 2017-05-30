@@ -8,6 +8,7 @@
 \usepackage{mathtools}
 \usepackage{amsfonts}
 \usepackage{amsthm}
+\usepackage{amssymb}
 \usepackage{textcomp}
 \usepackage{graphicx}
 \usepackage{tikz}
@@ -796,5 +797,68 @@ Et donc
 \[x^{(m)}=x\land y^{(m)}=y\]
 \end{proof}
 \end{theorem}
+
+\section{Problèmes de transport}
+\begin{definition}
+Un problème de transport est un tuple \((G,C)\) où \(G=(X,U)\) est un graphe
+orienté simple, avec \(X=\{x_1,\dots,x_n\}\) l'ensemble des sommets,
+\(U\subseteq X^2\) est l'ensemble des arrêtes, et où
+\(C=[c_{ij}]_{i,j\in\{1,\dots,n\}}\in [0,\infty]^{n\times n}\) est la matrice
+des capacités des arrêtes. Une capacité peut effectivement être infinie.
+\(x_1\) est nommé entrée, ou source, et n'a pas de prédecesseur:
+\[\nexists i\in\{1,\dots,n\}:\{x_i,x_1\}\in U\]
+\(x_n\) est nommé sortie, ou puit, et n'a pas de successeur:
+\[\nexists i\in\{1,\dots,n\}:\{x_n,x_j\}\in U\]
+\end{definition}
+
+\begin{note}
+On peut également formuler le problème avec \(G'=(X,U')\) étant un graphe
+complet (c'est à dire \(U'=X^2\)), et où \(\{x_i,x_i\}\notin U\Rightarrow
+c'_{ij}=0\).
+\end{note}
+
+\begin{notation}
+\[N\coloneqq\{1,\dots,n\}\]
+\end{notation}
+
+\begin{definition}
+Un flot dans un réseau de transport est un ensemble
+\[\{\phi_{i,j}\}_{i,j\in N}\]
+tel que
+\[\begin{dcases}
+	\phi_{ij}\ge 0                 &\forall i,j\in N\\
+	\phi_{ij}\le c_{ij}            &\forall i,j\in N\\
+	\sum_{j=1}^n(c_{ij}-c_{ji})=0 &\forall i\in \{2,\dots,n-1\}
+\end{dcases}\]
+La troisième propriété (appellée \emph{loi de conservation}) exprime que le flux
+entrant dans un noeud est égal au flux sortant de ce noeud, mis à part pour la
+source et le puit.
+\end{definition}
+
+\begin{corollary}[Corollaire de la loi de conservation]
+\[\sum_{j=1}^n\phi_{1j}=\sum_{j=1}^n\phi_{jn}\]
+\begin{proof}
+\begin{align}
+	&\sum_{j=1}^n(\phi_{ij}-\phi_{ji})=0\quad\forall i\in\{2,\dots,n-1\}\\
+	\Rightarrow&\sum_{j=1}^n\phi_{ij}=\sum_{j=1}^n\phi_{ji}\quad\forall i\in\{2,\dots,n-1\}\\
+	\Rightarrow&\sum_{i=1}^n\sum_{j=1}^n\phi_{ij}-\sum_{j=1}^n\phi_{1j}-\underbrace{\sum_{j=1}^n\phi_{nj}}_{=0}
+		=\sum_{i=1}^n\sum_{j=1}^n\phi_{ji}-\underbrace{\sum_{j=1}^n\phi_{j1}}_{=0}-\sum_{j=1}^n\phi_{jn}\\
+	\Rightarrow&\sum_{i=1}^n\sum_{j=1}^n\phi_{ij}-\sum_{j=1}^n\phi_{1j}=
+		\sum_{i=1}^n\sum_{j=1}^n\phi_{ji}-\sum_{j=1}^n\phi_{jn}\\
+	\Rightarrow&\sum_{j=1}^n\phi_{1j}=\sum_{j=1}^n\phi_{jn}\\
+\end{align}
+\end{proof}
+\end{corollary}
+
+\begin{definition}
+	La quantité \(\sum_{j=1}^n\phi_{1j}\) est appellée \emph{valeur du flux}.
+\end{definition}
+
+\begin{definition}
+Une \emph{coupe} est une partition de \(X\) en deux ensembles (disjoints) \(M\)
+et \(\bar M=X\setminus M\). La valeur d'une coupe \(\{M,\bar M\}\) est
+\[C(M,\bar M)=\sum_{x_i\in M}\sum_{x_j\in\bar M}c_{ij}\] L'ensemble des arcs
+\(\{\{x_i,x_j\}|x_i\in M,x_j\in\bar M\}\) sont appelés \emph{arcs de la coupe}.
+\end{definition}
 
 \end{document}
