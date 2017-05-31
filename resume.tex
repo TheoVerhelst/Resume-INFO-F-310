@@ -298,16 +298,17 @@ seulement si la base associée \(B\) est la matrice unité \(m\times m\).
 \end{definition}
 
 \begin{definition}
-Une solution de base \(x\) est dégénérée si et seulement si il existe plus d'une
-variable en base étant nulle.
+Une solution de base \(x\) est dégénérée si et seulement si il existe au moins
+une variable en base étant nulle.
 \end{definition}
 
 \begin{definition}
 Une \emph{combinaison linéaire convexe} d'éléments \(p_1,\dots,p_n\) est
 une expression de la forme \[\sum_{i=1}^n\alpha_ip_i\] où \(\alpha_i\in[0,1]
 \;\forall i\in\{1,\dots,n\}\) et où \(\sum_{i=1}^n\alpha_i=1\). \\
-Par exemple, pour deux points \(p_1\) et \(p_2\), cette expression représente le
-segment de droite reliant \(p_1\) et \(p_2\).
+Par exemple, pour deux points \(p_1\) et \(p_2\), une combinaison linéaire
+convexe de ces deux points représente un point sur le segment de droite reliant
+\(p_1\) et \(p_2\).
 \end{definition}
 
 \begin{definition}
@@ -325,8 +326,8 @@ Les \emph{sommets} d'un ensemble convexe \(P\) est le sous-ensemble \(S\) de
 linéaire convexe d'autres éléments:
 \[S=\{s\in P:\forall p_1\neq p_2\in P\setminus\{s\},\alpha\in[0,1],(\alpha
 p_1+(1-\alpha)p_2)\neq s\}\] C'est à dire tous les points qui ne se situent pas
-sur une droite reliant deux autres points de l'ensemble \(P\), quels que soient
-ces derniers points.
+sur un segment de droite reliant deux autres points de l'ensemble \(P\), quels
+que soient ces derniers points.
 \end{definition}
 
 \begin{corollary}
@@ -818,14 +819,14 @@ orienté simple, avec \(X=\{x_1,\dots,x_n\}\) l'ensemble des sommets,
 \(C=[c_{ij}]_{i,j\in\{1,\dots,n\}}\in [0,\infty]^{n\times n}\) est la matrice
 des capacités des arrêtes. Une capacité peut effectivement être infinie.
 \(x_1\) est nommé entrée, ou source, et n'a pas de prédecesseur:
-\[\nexists i\in\{1,\dots,n\}:\{x_i,x_1\}\in U\]
+\[\nexists i\in\{1,\dots,n\}:(x_i,x_1)\in U\]
 \(x_n\) est nommé sortie, ou puit, et n'a pas de successeur:
-\[\nexists i\in\{1,\dots,n\}:\{x_n,x_j\}\in U\]
+\[\nexists i\in\{1,\dots,n\}:(x_n,x_j)\in U\]
 \end{definition}
 
 \begin{note}
 On peut également formuler le problème avec \(G'=(X,U')\) étant un graphe
-complet (c'est à dire \(U'=X^2\)), et où \(\{x_i,x_i\}\notin U\Rightarrow
+complet (c'est à dire \(U'=X^2\)), et où \((x_i,x_i)\notin U\Rightarrow
 c'_{ij}=0\).
 \end{note}
 
@@ -870,7 +871,7 @@ source et le puit.
 Une \emph{coupe} est une partition de \(X\) en deux ensembles (disjoints) \(M\)
 et \(\bar M=X\setminus M\). La valeur d'une coupe \(\{M,\bar M\}\) est
 \[C(M,\bar M)=\sum_{x_i\in M}\sum_{x_j\in\bar M}c_{ij}\] L'ensemble des arcs
-\(\{\{x_i,x_j\}|x_i\in M,x_j\in\bar M\}\) sont appelés \emph{arcs de la coupe}.
+\(\{(x_i,x_j)|x_i\in M,x_j\in\bar M\}\) sont appelés \emph{arcs de la coupe}.
 \end{definition}
 
 \section{Problème de Hitchcock}
