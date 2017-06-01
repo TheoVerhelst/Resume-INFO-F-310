@@ -627,8 +627,9 @@ aux coefficients de la fonction économique exprimée uniquement à partir des
 variables hors base. Il suffit donc de substituer au sein de la fonction
 économique les variables introduites dans la base par leur expression dans le
 systeme au fur et à mesure des changement de base. Ensuite, pour déterminer
-\(k\), il suffit de chercher le plus grand/petit coefficient dans la nouvelle
-expression de la fonction économique.
+\(k\), il suffit de chercher le plus négatif (resp. positif) des coefficient
+dans la nouvelle expression de la fonction économique dans le cas d'un problème
+à minimum (resp. maximum).
 \end{note}
 
 \subsection{Critère d'optimalité}
@@ -793,21 +794,22 @@ Si \(x\) et \(y\) sont respectivement des solutions admissibles du primal et du
 dual et si \(cx=yb\), alors \(x\) et \(y\) sont respectivement des solutions
 optimales du primal et du dual.
 \begin{proof}
-Soient \(X\) l'ensemble des solutions admissibles du primal, et \(Y\) l'ensemble
-des solutions admissibles du dual. Soient \(x^{(m)}\) la solution optimale du
-primal telle que
-\[cx^{(m)}=\min_{x\in X}cx\]
-et \(y^{(m)}\) la solution optimale du dual telle que
-\[y^{(m)}b=\max_{y\in Y}yb\]
 Soient deux solutions admissibles du primal et du dual respectivement \(x\) et
-\(y\), telles que \(cx=yb\). On a
-\[cx^{(m)}\le cx=yb\le y^{(m)}b\]
-Or, par le théorème précédent, on a aussi
-\[cx^{(m)}\ge y^{(m)}b\]
-Par conséquent,
-\[cx^{(m)}=cx=yb=y^{(m)}b\]
-Et donc
-\[x^{(m)}=x\land y^{(m)}=y\]
+\(y\), telles que \(cx=yb\).
+\begin{itemize}
+	\item Supposons par l'absurde que \(x\) n'est pas optimale. Il existe donc
+		une autre solution admissible \(x^{\text{(m)}}\) telle que
+		\[cx^{\text{(m)}}< cx\]
+		Ce qui implique
+		\[cx^{\text{(m)}}< yb\]
+		Ce qui contredit le théorème précédent. Donc \(x\) est optimal.
+	\item Supposons par l'absurde que \(y\) n'est pas optimal. Il existe donc
+		une autre solution admissible \(y^{\text{(m)}}\) telle que
+		\[y^{\text{(m)}}b> yb\]
+		Ce qui implique
+		\[cx< y^{\text{(m)}}b\]
+		Ce qui contredit le théorème précédent. Donc \(y\) est optimal.
+\end{itemize}
 \end{proof}
 \end{theorem}
 
